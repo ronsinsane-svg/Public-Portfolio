@@ -1,0 +1,9 @@
+{
+  "today": "2026-07-08",
+  "lead_time_days": 3,
+  "ship_days": [
+    "Mon",
+    "Wed",
+    "Fri"
+  ]
+}

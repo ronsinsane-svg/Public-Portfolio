@@ -1,0 +1,135 @@
+[
+  {
+    "type": "stage_start",
+    "runId": "run-ORD-1001",
+    "stageId": "fulfillment",
+    "agentId": "fulfillment",
+    "model": "claude-sonnet-4-6"
+  },
+  {
+    "type": "token",
+    "text": "I'll start"
+  },
+  {
+    "type": "token",
+    "text": " by pulling the shipping schedule and checking inventory for all three SKUs simultaneously."
+  },
+  {
+    "type": "tool_call",
+    "name": "get_ship_schedule",
+    "args": {}
+  },
+  {
+    "type": "tool_result",
+    "name": "get_ship_schedule",
+    "summary": "{\"today\":\"2026-07-08 (Wednesday)\",\"lead_time_days\":3,\"ship_days\":[\"Mon\",\"Wed\",\"Fri\"]}"
+  },
+  {
+    "type": "tool_call",
+    "name": "check_inventory",
+    "args": {
+      "sku": "MG-CL-001",
+      "date": "2026-07-13"
+    }
+  },
+  {
+    "type": "tool_result",
+    "name": "check_inventory",
+    "summary": "{\"sku\":\"MG-CL-001\",\"on_hand\":5200,\"inbound\":[],\"requested_date\":\"2026-07-13 (Monday)\",\"today\":\"2026-07-08 (Wednesday)\",\"lead_time_days\":3,\"ship_days\":[\"Mon\",\"Wed\",\"Fri\"]}"
+  },
+  {
+    "type": "tool_call",
+    "name": "check_inventory",
+    "args": {
+      "sku": "MG-KT-001",
+      "date": "2026-07-13"
+    }
+  },
+  {
+    "type": "tool_result",
+    "name": "check_inventory",
+    "summary": "{\"sku\":\"MG-KT-001\",\"on_hand\":6200,\"inbound\":[],\"requested_date\":\"2026-07-13 (Monday)\",\"today\":\"2026-07-08 (Wednesday)\",\"lead_time_days\":3,\"ship_days\":[\"Mon\",\"Wed\",\"Fri\"]}"
+  },
+  {
+    "type": "tool_call",
+    "name": "check_inventory",
+    "args": {
+      "sku": "MG-LN-002",
+      "date": "2026-07-13"
+    }
+  },
+  {
+    "type": "tool_result",
+    "name": "check_inventory",
+    "summary": "{\"sku\":\"MG-LN-002\",\"on_hand\":3600,\"inbound\":[],\"requested_date\":\"2026-07-13 (Monday)\",\"today\":\"2026-07-08 (Wednesday)\",\"lead_time_days\":3,\"ship_days\":[\"Mon\",\"Wed\",\"Fri\"]}"
+  },
+  {
+    "type": "usage",
+    "inputTokens": 1530,
+    "outputTokens": 248,
+    "latencyMs": 3896
+  },
+  {
+    "type": "token",
+    "text": "All"
+  },
+  {
+    "type": "token",
+    "text": " the data I need is back. Let me walk through the feasibility.\n\nThe"
+  },
+  {
+    "type": "token",
+    "text": " ship schedule requires a 3-day process lead time, and ships on Monday"
+  },
+  {
+    "type": "token",
+    "text": ", Wednesday, and Friday. Today is Wednesday 2026-07-08, so the earliest a ship date can be targeted is 3"
+  },
+  {
+    "type": "token",
+    "text": " days out. The requested ship date is Monday 2026-07-13, which the inventory tool confirms is"
+  },
+  {
+    "type": "token",
+    "text": " a valid ship day. From today (Wednesday July"
+  },
+  {
+    "type": "token",
+    "text": " 8), Monday July 13 is 5 calendar days away, which satisfies the 3-day lead time requirement."
+  },
+  {
+    "type": "token",
+    "text": " So the date itself is feasible.\n\nNow checking quantity coverage: MG-CL-001 needs"
+  },
+  {
+    "type": "token",
+    "text": " 240 units against 5,200 on hand — covered. MG-KT-001 needs 480 units against 6,200 on hand — covered. MG-"
+  },
+  {
+    "type": "token",
+    "text": "LN-002 needs 144 units against 3,600 on hand — covered. All three lines have ample stock with"
+  },
+  {
+    "type": "token",
+    "text": " no inbound receipts needed."
+  },
+  {
+    "type": "verdict",
+    "verdict": {
+      "status": "pass",
+      "issues": [],
+      "proposed_fix": null,
+      "confidence": 0.99,
+      "explanation": "All three lines on ORD-1001 are fully feasible for the requested ship date of 2026-07-13 (Monday). The shipping schedule confirms Monday is a valid ship day. Today is 2026-07-08 (Wednesday), giving 5 calendar days before the requested ship date, which satisfies the 3-day process lead time. Inventory is more than sufficient on all lines: MG-CL-001 requires 240 units with 5,200 on hand; MG-KT-001 requires 480 units with 6,200 on hand; MG-LN-002 requires 144 units with 3,600 on hand. No inbound receipts are needed. Order passes fulfillment feasibility with no issues."
+    }
+  },
+  {
+    "type": "usage",
+    "inputTokens": 2139,
+    "outputTokens": 517,
+    "latencyMs": 9446
+  },
+  {
+    "type": "done"
+  }
+]

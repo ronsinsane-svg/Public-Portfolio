@@ -1,0 +1,14 @@
+{
+  "ORD-1001:fulfillment": "ORD-1001.fulfillment.json",
+  "ORD-1001:intake": "ORD-1001.intake.json",
+  "ORD-1002:fulfillment": "ORD-1002.fulfillment.json",
+  "ORD-1002:intake": "ORD-1002.intake.json",
+  "ORD-1003:fulfillment": "ORD-1003.fulfillment.json",
+  "ORD-1003:intake": "ORD-1003.intake.json",
+  "ORD-1004:fulfillment": "ORD-1004.fulfillment.json",
+  "ORD-1004:intake": "ORD-1004.intake.json",
+  "ORD-1005:fulfillment": "ORD-1005.fulfillment.json",
+  "ORD-1005:intake": "ORD-1005.intake.json",
+  "REM-3001:deduction": "REM-3001.deduction.json",
+  "REM-3002:deduction": "REM-3002.deduction.json"
+}

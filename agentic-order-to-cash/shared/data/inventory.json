@@ -1,0 +1,127 @@
+[
+  {
+    "sku": "MG-CL-001",
+    "on_hand": 5200,
+    "inbound": []
+  },
+  {
+    "sku": "MG-CL-002",
+    "on_hand": 4600,
+    "inbound": []
+  },
+  {
+    "sku": "MG-CL-003",
+    "on_hand": 3900,
+    "inbound": [
+      {
+        "date": "2026-07-20",
+        "qty": 600
+      }
+    ]
+  },
+  {
+    "sku": "MG-CL-004",
+    "on_hand": 2800,
+    "inbound": []
+  },
+  {
+    "sku": "MG-CL-005",
+    "on_hand": 200,
+    "inbound": [
+      {
+        "date": "2026-07-16",
+        "qty": 1200
+      }
+    ]
+  },
+  {
+    "sku": "MG-KT-001",
+    "on_hand": 6200,
+    "inbound": []
+  },
+  {
+    "sku": "MG-KT-003",
+    "on_hand": 5400,
+    "inbound": [
+      {
+        "date": "2026-07-13",
+        "qty": 480
+      }
+    ]
+  },
+  {
+    "sku": "MG-KT-004",
+    "on_hand": 3200,
+    "inbound": [
+      {
+        "date": "2026-07-14",
+        "qty": 500
+      }
+    ]
+  },
+  {
+    "sku": "MG-KT-005",
+    "on_hand": 2600,
+    "inbound": []
+  },
+  {
+    "sku": "MG-LN-001",
+    "on_hand": 2400,
+    "inbound": []
+  },
+  {
+    "sku": "MG-LN-002",
+    "on_hand": 3600,
+    "inbound": []
+  },
+  {
+    "sku": "MG-LN-003",
+    "on_hand": 2200,
+    "inbound": [
+      {
+        "date": "2026-07-21",
+        "qty": 300
+      }
+    ]
+  },
+  {
+    "sku": "MG-LN-004",
+    "on_hand": 2500,
+    "inbound": []
+  },
+  {
+    "sku": "MG-LN-005",
+    "on_hand": 4400,
+    "inbound": []
+  },
+  {
+    "sku": "MG-ST-001",
+    "on_hand": 3000,
+    "inbound": []
+  },
+  {
+    "sku": "MG-ST-002",
+    "on_hand": 4100,
+    "inbound": []
+  },
+  {
+    "sku": "MG-ST-003",
+    "on_hand": 3700,
+    "inbound": [
+      {
+        "date": "2026-07-15",
+        "qty": 240
+      }
+    ]
+  },
+  {
+    "sku": "MG-ST-004",
+    "on_hand": 2900,
+    "inbound": []
+  },
+  {
+    "sku": "MG-ST-005",
+    "on_hand": 3300,
+    "inbound": []
+  }
+]

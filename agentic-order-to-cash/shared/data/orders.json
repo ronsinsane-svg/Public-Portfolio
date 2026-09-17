@@ -1,0 +1,424 @@
+[
+  {
+    "id": "ORD-1001",
+    "type": "edi",
+    "scenario": 1,
+    "status": "new",
+    "retailer_id": "RET-SUMMIT",
+    "po_number": "SR-88123",
+    "requested_ship_date": "2026-07-13",
+    "lines": [
+      {
+        "sku": "MG-CL-001",
+        "qty": 240,
+        "unit_price": 7.9
+      },
+      {
+        "sku": "MG-KT-001",
+        "qty": 480,
+        "unit_price": 11.5
+      },
+      {
+        "sku": "MG-LN-002",
+        "qty": 144,
+        "unit_price": 14.75
+      }
+    ]
+  },
+  {
+    "id": "ORD-1002",
+    "type": "email",
+    "scenario": 2,
+    "status": "new",
+    "retailer_id": null,
+    "raw_text": "Hi — Deb over at Harbor Wholesale here. We're running low again, could you send our usual snack bags, lets say 40 cases this time, and toss in 10 cases of that new bamboo shelf liner everyone's asking about. Need it before the 15th if at all possible. Thanks!!"
+  },
+  {
+    "id": "ORD-1003",
+    "type": "edi",
+    "scenario": 3,
+    "status": "new",
+    "retailer_id": "RET-CEDAR",
+    "po_number": "CM-44019",
+    "requested_ship_date": "2026-07-15",
+    "lines": [
+      {
+        "sku": "MG-LN-001",
+        "qty": 120,
+        "unit_price": 17.1
+      },
+      {
+        "sku": "MG-CL-002",
+        "qty": 360,
+        "unit_price": 10.58
+      },
+      {
+        "sku": "MG-ST-005",
+        "qty": 240,
+        "unit_price": 6.1
+      }
+    ]
+  },
+  {
+    "id": "ORD-1004",
+    "type": "edi",
+    "scenario": 4,
+    "status": "new",
+    "retailer_id": "RET-HARBOR",
+    "po_number": "HW-73202",
+    "requested_ship_date": "2026-07-13",
+    "lines": [
+      {
+        "sku": "MG-KT-002",
+        "qty": 120,
+        "unit_price": 13.1
+      },
+      {
+        "sku": "MG-ST-003",
+        "qty": 240,
+        "unit_price": 7.35
+      }
+    ]
+  },
+  {
+    "id": "ORD-1005",
+    "type": "edi",
+    "scenario": 5,
+    "status": "new",
+    "retailer_id": "RET-CEDAR",
+    "po_number": "CM-44027",
+    "requested_ship_date": "2026-07-10",
+    "lines": [
+      {
+        "sku": "MG-CL-005",
+        "qty": 720,
+        "unit_price": 10.4
+      }
+    ]
+  },
+  {
+    "id": "ORD-0901",
+    "type": "edi",
+    "status": "fulfilled",
+    "retailer_id": "RET-SUMMIT",
+    "po_number": "SR-87011",
+    "requested_ship_date": "2026-01-16",
+    "lines": [
+      {
+        "sku": "MG-CL-004",
+        "qty": 600,
+        "unit_price": 7.15
+      },
+      {
+        "sku": "MG-ST-001",
+        "qty": 360,
+        "unit_price": 6.65
+      }
+    ]
+  },
+  {
+    "id": "ORD-0934",
+    "type": "edi",
+    "status": "fulfilled",
+    "retailer_id": "RET-SUMMIT",
+    "po_number": "SR-87342",
+    "requested_ship_date": "2026-02-20",
+    "lines": [
+      {
+        "sku": "MG-KT-004",
+        "qty": 240,
+        "unit_price": 13.8
+      },
+      {
+        "sku": "MG-LN-005",
+        "qty": 480,
+        "unit_price": 8.55
+      }
+    ]
+  },
+  {
+    "id": "ORD-0968",
+    "type": "edi",
+    "status": "fulfilled",
+    "retailer_id": "RET-SUMMIT",
+    "po_number": "SR-87715",
+    "requested_ship_date": "2026-04-10",
+    "lines": [
+      {
+        "sku": "MG-CL-003",
+        "qty": 720,
+        "unit_price": 8.8
+      },
+      {
+        "sku": "MG-KT-005",
+        "qty": 480,
+        "unit_price": 5.75
+      },
+      {
+        "sku": "MG-ST-002",
+        "qty": 240,
+        "unit_price": 7.4
+      }
+    ]
+  },
+  {
+    "id": "ORD-0981",
+    "type": "edi",
+    "status": "fulfilled",
+    "retailer_id": "RET-SUMMIT",
+    "po_number": "SR-87988",
+    "requested_ship_date": "2026-05-15",
+    "lines": [
+      {
+        "sku": "MG-LN-003",
+        "qty": 300,
+        "unit_price": 15.9
+      },
+      {
+        "sku": "MG-ST-004",
+        "qty": 480,
+        "unit_price": 5.3
+      }
+    ]
+  },
+  {
+    "id": "ORD-0993",
+    "type": "edi",
+    "status": "fulfilled",
+    "retailer_id": "RET-SUMMIT",
+    "po_number": "SR-88091",
+    "requested_ship_date": "2026-06-10",
+    "lines": [
+      {
+        "sku": "MG-CL-001",
+        "qty": 6000,
+        "unit_price": 7.9
+      },
+      {
+        "sku": "MG-KT-001",
+        "qty": 4800,
+        "unit_price": 11.5
+      },
+      {
+        "sku": "MG-LN-004",
+        "qty": 1296,
+        "unit_price": 18.75
+      }
+    ]
+  },
+  {
+    "id": "ORD-0912",
+    "type": "edi",
+    "status": "fulfilled",
+    "retailer_id": "RET-HARBOR",
+    "po_number": "HW-72018",
+    "requested_ship_date": "2026-01-21",
+    "lines": [
+      {
+        "sku": "MG-KT-003",
+        "qty": 720,
+        "unit_price": 10.25
+      },
+      {
+        "sku": "MG-ST-001",
+        "qty": 240,
+        "unit_price": 6.7
+      }
+    ]
+  },
+  {
+    "id": "ORD-0941",
+    "type": "edi",
+    "status": "fulfilled",
+    "retailer_id": "RET-HARBOR",
+    "po_number": "HW-72444",
+    "requested_ship_date": "2026-02-25",
+    "lines": [
+      {
+        "sku": "MG-CL-002",
+        "qty": 360,
+        "unit_price": 9.75
+      },
+      {
+        "sku": "MG-KT-003",
+        "qty": 960,
+        "unit_price": 10.25
+      }
+    ]
+  },
+  {
+    "id": "ORD-0962",
+    "type": "edi",
+    "status": "fulfilled",
+    "retailer_id": "RET-HARBOR",
+    "po_number": "HW-72736",
+    "requested_ship_date": "2026-04-01",
+    "lines": [
+      {
+        "sku": "MG-LN-002",
+        "qty": 240,
+        "unit_price": 14.8
+      },
+      {
+        "sku": "MG-KT-003",
+        "qty": 480,
+        "unit_price": 10.25
+      },
+      {
+        "sku": "MG-ST-005",
+        "qty": 360,
+        "unit_price": 6.05
+      }
+    ]
+  },
+  {
+    "id": "ORD-0979",
+    "type": "edi",
+    "status": "fulfilled",
+    "retailer_id": "RET-HARBOR",
+    "po_number": "HW-72988",
+    "requested_ship_date": "2026-05-13",
+    "lines": [
+      {
+        "sku": "MG-CL-003",
+        "qty": 480,
+        "unit_price": 8.75
+      },
+      {
+        "sku": "MG-KT-003",
+        "qty": 960,
+        "unit_price": 10.25
+      },
+      {
+        "sku": "MG-ST-003",
+        "qty": 600,
+        "unit_price": 7.35
+      }
+    ]
+  },
+  {
+    "id": "ORD-0990",
+    "type": "edi",
+    "status": "fulfilled",
+    "retailer_id": "RET-HARBOR",
+    "po_number": "HW-73164",
+    "requested_ship_date": "2026-06-17",
+    "lines": [
+      {
+        "sku": "MG-KT-004",
+        "qty": 360,
+        "unit_price": 13.95
+      },
+      {
+        "sku": "MG-LN-005",
+        "qty": 720,
+        "unit_price": 8.6
+      }
+    ]
+  },
+  {
+    "id": "ORD-0907",
+    "type": "edi",
+    "status": "fulfilled",
+    "retailer_id": "RET-CEDAR",
+    "po_number": "CM-43018",
+    "requested_ship_date": "2026-01-23",
+    "lines": [
+      {
+        "sku": "MG-CL-001",
+        "qty": 360,
+        "unit_price": 7.95
+      },
+      {
+        "sku": "MG-LN-001",
+        "qty": 180,
+        "unit_price": 17.1
+      }
+    ]
+  },
+  {
+    "id": "ORD-0928",
+    "type": "edi",
+    "status": "fulfilled",
+    "retailer_id": "RET-CEDAR",
+    "po_number": "CM-43256",
+    "requested_ship_date": "2026-02-18",
+    "lines": [
+      {
+        "sku": "MG-KT-001",
+        "qty": 720,
+        "unit_price": 11.6
+      },
+      {
+        "sku": "MG-ST-002",
+        "qty": 480,
+        "unit_price": 7.5
+      }
+    ]
+  },
+  {
+    "id": "ORD-0955",
+    "type": "edi",
+    "status": "fulfilled",
+    "retailer_id": "RET-CEDAR",
+    "po_number": "CM-43541",
+    "requested_ship_date": "2026-03-25",
+    "lines": [
+      {
+        "sku": "MG-CL-005",
+        "qty": 240,
+        "unit_price": 10.4
+      },
+      {
+        "sku": "MG-LN-004",
+        "qty": 300,
+        "unit_price": 18.7
+      }
+    ]
+  },
+  {
+    "id": "ORD-0983",
+    "type": "edi",
+    "status": "fulfilled",
+    "retailer_id": "RET-CEDAR",
+    "po_number": "CM-43872",
+    "requested_ship_date": "2026-05-20",
+    "lines": [
+      {
+        "sku": "MG-KT-005",
+        "qty": 480,
+        "unit_price": 5.85
+      },
+      {
+        "sku": "MG-ST-004",
+        "qty": 720,
+        "unit_price": 5.4
+      }
+    ]
+  },
+  {
+    "id": "ORD-0995",
+    "type": "edi",
+    "status": "fulfilled",
+    "retailer_id": "RET-CEDAR",
+    "po_number": "CM-43996",
+    "requested_ship_date": "2026-06-24",
+    "lines": [
+      {
+        "sku": "MG-CL-002",
+        "qty": 600,
+        "unit_price": 9.8
+      },
+      {
+        "sku": "MG-KT-004",
+        "qty": 240,
+        "unit_price": 13.9
+      },
+      {
+        "sku": "MG-LN-005",
+        "qty": 480,
+        "unit_price": 8.65
+      }
+    ]
+  }
+]

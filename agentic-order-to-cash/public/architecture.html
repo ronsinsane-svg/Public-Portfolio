@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Meridian Goods Order-to-Cash — Architecture</title>
+    <style>
+      :root {
+        --paper: oklch(0.98 0.004 255);
+        --surface: oklch(0.965 0.006 255);
+        --sunk: oklch(0.945 0.007 255);
+        --hairline: oklch(0.9 0.008 258);
+        --hairline-strong: oklch(0.84 0.01 258);
+        --ink: oklch(0.24 0.02 260);
+        --muted: oklch(0.5 0.02 260);
+        --faint: oklch(0.62 0.015 260);
+        --accent: oklch(0.54 0.15 255);
+        --accent-ink: oklch(0.38 0.13 255);
+        --accent-soft: oklch(0.95 0.03 255);
+        --pass-ink: oklch(0.42 0.11 150);
+        --gate: oklch(0.7 0.15 72);
+        --gate-soft: oklch(0.95 0.05 75);
+        --gate-ink: oklch(0.48 0.11 60);
+        --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--sans);
+        padding: 32px 28px 56px;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap { max-width: 1120px; margin: 0 auto; }
+      header { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+      h1 { font-size: 1.5rem; margin: 0; letter-spacing: -0.02em; }
+      .sub { color: var(--faint); font-size: 0.85rem; }
+      .lead {
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        max-width: 88ch;
+        margin: 10px 0 24px;
+      }
+      .zone-label {
+        font: 600 0.7rem var(--sans);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--faint);
+        margin-bottom: 8px;
+      }
+      /* three columns with connector gutters between */
+      .flow {
+        display: grid;
+        grid-template-columns: 1fr 64px 1fr 64px 1fr;
+        align-items: stretch;
+        gap: 0 0;
+      }
+      @media (max-width: 900px) {
+        .flow { grid-template-columns: 1fr; }
+        .conn { display: none !important; }
+      }
+      .col { display: flex; flex-direction: column; gap: 12px; }
+      .zone {
+        background: var(--surface);
+        border: 1px solid var(--hairline-strong);
+        border-radius: 14px;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        height: 100%;
+      }
+      .box {
+        background: var(--paper);
+        border: 1px solid var(--hairline);
+        border-radius: 9px;
+        padding: 12px 14px;
+      }
+      .box.accent { background: var(--accent-soft); border-color: var(--accent); }
+      .box.gate { background: var(--gate-soft); border-color: var(--gate); }
+      .box.sunk { background: var(--sunk); }
+      .box h3 { margin: 0 0 3px; font-size: 0.95rem; font-weight: 600; }
+      .box.accent h3 { color: var(--accent-ink); }
+      .box.gate h3 { color: var(--gate-ink); }
+      .box .k { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); }
+      .box p { margin: 6px 0 0; font-size: 0.82rem; line-height: 1.5; color: var(--muted); }
+      .box ul { margin: 6px 0 0; padding-left: 16px; }
+      .box li { font-size: 0.8rem; line-height: 1.55; color: var(--muted); }
+      .tools { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+      .chip {
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        background: var(--paper);
+        border: 1px solid var(--hairline-strong);
+        color: var(--muted);
+        padding: 2px 7px;
+        border-radius: 5px;
+      }
+      .flag { font-family: var(--mono); font-size: 0.78rem; color: var(--pass-ink); font-weight: 600; }
+      /* connector gutters */
+      .conn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 4px;
+        padding-top: 26px;
+      }
+      .conn .arw { color: var(--accent); font-size: 1.3rem; line-height: 1; }
+      .conn .arw.plain { color: var(--muted); }
+      .conn .lbl { font-family: var(--mono); font-size: 0.66rem; color: var(--faint); line-height: 1.3; }
+      /* production band */
+      .prod {
+        margin-top: 16px;
+        border: 1.5px dashed var(--accent);
+        border-radius: 14px;
+        padding: 14px 16px 16px;
+        background: color-mix(in oklch, var(--accent-soft) 45%, var(--paper));
+      }
+      .prod .zone-label { color: var(--accent-ink); }
+      .prod-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 40px 1fr 1fr 1fr;
+        gap: 12px;
+        align-items: center;
+      }
+      @media (max-width: 900px) {
+        .prod-grid { grid-template-columns: 1fr; }
+        .prod-grid .conn { display: none; }
+      }
+      .swap-note {
+        text-align: center;
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        color: var(--accent-ink);
+        margin: 10px 0 0;
+      }
+      .legend { display: flex; gap: 20px; margin-top: 18px; flex-wrap: wrap; font-size: 0.8rem; color: var(--muted); }
+      .legend span { display: inline-flex; align-items: center; gap: 7px; }
+      .sw { width: 22px; border-top: 2px solid; display: inline-block; }
+      .foot { margin-top: 16px; color: var(--faint); font-size: 0.8rem; line-height: 1.5; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>Order-to-Cash — System Architecture</h1>
+        <span class="sub">Deterministic orchestrator · read-only agents · human gate</span>
+      </header>
+      <p class="lead">
+        The load-bearing property: a deterministic orchestrator owns every workflow decision. Agents
+        are consulted for read-only verdicts and never control the pipeline, call a write, or see the
+        state machine. Every write executes as plain code behind a human gate. The same structure
+        moves to production by swapping bundled JSON for an adapter layer (MCP) over real systems;
+        nothing else changes.
+      </p>
+
+      <div class="flow">
+        <!-- CLIENT -->
+        <div class="col">
+          <div class="zone-label">Browser (client)</div>
+          <div class="zone">
+            <div class="box">
+              <h3>React dashboard (SPA)</h3>
+              <div class="k">pipeline · approvals · guardrails · audit · templates</div>
+              <p>Holds session state; reset and live/replay toggle live here.</p>
+            </div>
+            <div class="box accent">
+              <h3>Deterministic orchestrator</h3>
+              <div class="k">shared/engine.ts</div>
+              <ul>
+                <li>decides which agent runs next</li>
+                <li>pass advances, exception gates</li>
+                <li>applies approved patches on advance</li>
+              </ul>
+            </div>
+            <div class="box gate">
+              <h3>Human approval gate</h3>
+              <p>Writes (approve, post, dispute) run here as deterministic code, never as an agent tool.</p>
+            </div>
+            <div class="box">
+              <h3>Audit log</h3>
+              <p>Every event: agent, model, tools, tokens, latency, decision.</p>
+            </div>
+            <div class="box sunk">
+              <h3>Guardrails</h3>
+              <ul>
+                <li>kill switch (pause all dispatch)</li>
+                <li>per-agent tool allowlist</li>
+                <li>approval threshold</li>
+                <li>timeout, retry, round caps</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="conn">
+          <div class="arw">⇄</div>
+          <div class="lbl">POST<br />/api/agent-run<br />← SSE</div>
+        </div>
+
+        <!-- SERVER -->
+        <div class="col">
+          <div class="zone-label">Netlify Functions (server)</div>
+          <div class="zone">
+            <div class="box">
+              <h3>agent-run function</h3>
+              <div class="k">holds ANTHROPIC_API_KEY</div>
+              <ul>
+                <li>one model round per invocation</li>
+                <li>streams SSE reasoning to client</li>
+                <li>enforces the per-agent allowlist</li>
+              </ul>
+            </div>
+            <div class="box sunk">
+              <h3>Scoped read-only tools</h3>
+              <div class="tools">
+                <span class="chip">lookup_sku</span>
+                <span class="chip">get_price_list</span>
+                <span class="chip">get_contract_terms</span>
+                <span class="chip">check_inventory</span>
+                <span class="chip">check_order_history</span>
+                <span class="chip">get_ship_schedule</span>
+                <span class="chip">get_invoice</span>
+                <span class="chip">match_remittance_lines</span>
+              </div>
+              <p class="flag">0 write tools exist.</p>
+              <p>Today these read bundled synthetic JSON (the demo dataset).</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="conn">
+          <div class="arw plain">→</div>
+          <div class="lbl">tool use</div>
+        </div>
+
+        <!-- ANTHROPIC -->
+        <div class="col">
+          <div class="zone-label">Anthropic Messages API</div>
+          <div class="zone">
+            <div class="box">
+              <h3>Intake &amp; validation</h3>
+              <div class="k">claude-sonnet-4-6</div>
+              <p>Parse, validate, cite evidence.</p>
+            </div>
+            <div class="box">
+              <h3>Fulfillment feasibility</h3>
+              <div class="k">claude-sonnet-4-6</div>
+              <p>Inventory against the requested ship date.</p>
+            </div>
+            <div class="box">
+              <h3>Deduction reconciliation</h3>
+              <div class="k">claude-sonnet-4-6</div>
+              <p>Variance against contract, drafts a dispute. Returns a verdict; proposes, never posts.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRODUCTION -->
+      <div class="prod">
+        <div class="zone-label">In production (the paid discovery phase maps this)</div>
+        <div class="prod-grid">
+          <div class="box accent">
+            <h3>ERP adapter layer (MCP)</h3>
+            <div class="k">Model Context Protocol</div>
+            <p>Same tool contract, real backends. Swap JSON for live reads; agents and orchestrator are unchanged.</p>
+          </div>
+          <div class="conn"><div class="arw plain">→</div></div>
+          <div class="box"><h3>ERP</h3><p>orders, invoices</p></div>
+          <div class="box"><h3>EDI</h3><p>retailer feeds</p></div>
+          <div class="box"><h3>Contracts</h3><p>terms, price lists</p></div>
+        </div>
+        <p class="swap-note">↑ attaches where the read-only tools sit today</p>
+      </div>
+
+      <div class="legend">
+        <span><span class="sw" style="border-color: var(--accent)"></span> deterministic control &amp; SSE</span>
+        <span><span class="sw" style="border-color: var(--gate)"></span> human gate</span>
+        <span><span class="sw" style="border-color: var(--muted)"></span> data / tool calls</span>
+        <span><span class="sw" style="border-color: var(--accent); border-top-style: dashed"></span> production swap point</span>
+      </div>
+      <p class="foot">
+        Synthetic demonstration data throughout. The API key lives only in the Netlify Function
+        environment and never reaches the browser.
+      </p>
+    </div>
+  </body>
+</html>

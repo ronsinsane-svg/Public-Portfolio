@@ -1,0 +1,18 @@
+{
+  "id": "purchase-to-payment",
+  "label": "Purchase-to-Payment",
+  "description": "The same engine pointed at the next workflow: vendor invoices in, three-way matched, payments out. Defined but not yet activated.",
+  "lanes": [
+    {
+      "id": "purchases",
+      "label": "Purchase orders",
+      "inputKind": "order",
+      "stages": [
+        { "id": "po-intake", "label": "PO intake", "agentId": null },
+        { "id": "receipt-match", "label": "Three-way match", "agentId": null },
+        { "id": "payment-approval", "label": "Payment approval", "agentId": null },
+        { "id": "complete", "label": "Complete", "agentId": null }
+      ]
+    }
+  ]
+}

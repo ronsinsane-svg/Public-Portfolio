@@ -1,0 +1,377 @@
+[
+  {
+    "retailer_id": "RET-SUMMIT",
+    "retailer_name": "Summit Retail Group",
+    "payment_terms": "Net 45",
+    "allowed_deduction_pct": 15,
+    "clauses": [
+      {
+        "id": "3.1",
+        "title": "Payment terms",
+        "text": "Buyer shall remit payment within forty-five (45) days of the invoice date under Net 45 terms."
+      },
+      {
+        "id": "4.2",
+        "title": "Early payment discount",
+        "text": "Buyer may deduct fifteen percent (15%) from the invoiced amount when payment is remitted within ten (10) days of the invoice date. No other deductions are authorized without Seller's prior written approval."
+      },
+      {
+        "id": "6.1",
+        "title": "Shipping window",
+        "text": "Seller will ship accepted purchase orders on the next available Monday, Wednesday, or Friday shipping day after inventory is allocated."
+      }
+    ],
+    "price_list": [
+      {
+        "sku": "MG-CL-001",
+        "contract_price": 7.9,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-CL-002",
+        "contract_price": 9.65,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-CL-003",
+        "contract_price": 8.8,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-CL-004",
+        "contract_price": 7.15,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-CL-005",
+        "contract_price": 10.35,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-KT-001",
+        "contract_price": 11.5,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-KT-002",
+        "contract_price": 12.85,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-KT-003",
+        "contract_price": 10.15,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-KT-004",
+        "contract_price": 13.8,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-KT-005",
+        "contract_price": 5.75,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-LN-001",
+        "contract_price": 17.05,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-LN-002",
+        "contract_price": 14.75,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-LN-003",
+        "contract_price": 15.9,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-LN-004",
+        "contract_price": 18.75,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-LN-005",
+        "contract_price": 8.55,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-ST-001",
+        "contract_price": 6.65,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-ST-002",
+        "contract_price": 7.4,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-ST-003",
+        "contract_price": 7.55,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-ST-004",
+        "contract_price": 5.3,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-ST-005",
+        "contract_price": 6,
+        "effective": "2026-01-01"
+      }
+    ]
+  },
+  {
+    "retailer_id": "RET-HARBOR",
+    "retailer_name": "Harbor Wholesale",
+    "payment_terms": "Net 30",
+    "allowed_deduction_pct": 10,
+    "clauses": [
+      {
+        "id": "3.1",
+        "title": "Payment terms",
+        "text": "Buyer shall remit payment within thirty (30) days of the invoice date under Net 30 terms."
+      },
+      {
+        "id": "4.1",
+        "title": "Early payment discount",
+        "text": "Buyer may deduct ten percent (10%) from the invoiced amount when payment is remitted within ten (10) days of the invoice date. No other deductions are authorized without Seller's prior written approval."
+      },
+      {
+        "id": "5.3",
+        "title": "Freight allowance",
+        "text": "Seller will prepay standard freight for purchase orders totaling at least five thousand dollars ($5,000) after contractual discounts."
+      }
+    ],
+    "price_list": [
+      {
+        "sku": "MG-CL-001",
+        "contract_price": 7.85,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-CL-002",
+        "contract_price": 9.75,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-CL-003",
+        "contract_price": 8.75,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-CL-004",
+        "contract_price": 7.1,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-CL-005",
+        "contract_price": 10.45,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-KT-001",
+        "contract_price": 11.55,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-KT-002",
+        "contract_price": 13.1,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-KT-003",
+        "contract_price": 10.25,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-KT-004",
+        "contract_price": 13.95,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-KT-005",
+        "contract_price": 5.8,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-LN-001",
+        "contract_price": 17.15,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-LN-002",
+        "contract_price": 14.8,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-LN-003",
+        "contract_price": 15.95,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-LN-004",
+        "contract_price": 18.6,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-LN-005",
+        "contract_price": 8.6,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-ST-001",
+        "contract_price": 6.7,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-ST-002",
+        "contract_price": 7.45,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-ST-003",
+        "contract_price": 7.35,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-ST-004",
+        "contract_price": 5.35,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-ST-005",
+        "contract_price": 6.05,
+        "effective": "2026-01-01"
+      }
+    ]
+  },
+  {
+    "retailer_id": "RET-CEDAR",
+    "retailer_name": "Cedar Market Co.",
+    "payment_terms": "Net 40",
+    "allowed_deduction_pct": 12,
+    "clauses": [
+      {
+        "id": "3.1",
+        "title": "Payment terms",
+        "text": "Buyer shall remit payment within forty (40) days of the invoice date under Net 40 terms."
+      },
+      {
+        "id": "4.4",
+        "title": "Early payment discount",
+        "text": "Buyer may deduct twelve percent (12%) from the invoiced amount when payment is remitted within ten (10) days of the invoice date. No other deductions are authorized without Seller's prior written approval."
+      },
+      {
+        "id": "6.2",
+        "title": "Ship date changes",
+        "text": "Seller may offer the next available scheduled ship date when requested quantities exceed available inventory on the requested ship date."
+      }
+    ],
+    "price_list": [
+      {
+        "sku": "MG-CL-001",
+        "contract_price": 7.95,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-CL-002",
+        "contract_price": 9.8,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-CL-003",
+        "contract_price": 8.85,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-CL-004",
+        "contract_price": 7.2,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-CL-005",
+        "contract_price": 10.4,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-KT-001",
+        "contract_price": 11.6,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-KT-002",
+        "contract_price": 13,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-KT-003",
+        "contract_price": 10.2,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-KT-004",
+        "contract_price": 13.9,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-KT-005",
+        "contract_price": 5.85,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-LN-001",
+        "contract_price": 17.1,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-LN-002",
+        "contract_price": 14.85,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-LN-003",
+        "contract_price": 16,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-LN-004",
+        "contract_price": 18.7,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-LN-005",
+        "contract_price": 8.65,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-ST-001",
+        "contract_price": 6.75,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-ST-002",
+        "contract_price": 7.5,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-ST-003",
+        "contract_price": 7.6,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-ST-004",
+        "contract_price": 5.4,
+        "effective": "2026-01-01"
+      },
+      {
+        "sku": "MG-ST-005",
+        "contract_price": 6.1,
+        "effective": "2026-01-01"
+      }
+    ]
+  }
+]

@@ -1,0 +1,182 @@
+[
+  {
+    "sku": "MG-CL-001",
+    "name": "All-Purpose Surface Cleaner 16oz",
+    "category": "cleaning",
+    "list_price": 8.5,
+    "case_pack": 12,
+    "status": "active",
+    "replacement_sku": null
+  },
+  {
+    "sku": "MG-CL-002",
+    "name": "Glass & Mirror Cleaner 16oz",
+    "category": "cleaning",
+    "list_price": 10.5,
+    "case_pack": 12,
+    "status": "active",
+    "replacement_sku": null
+  },
+  {
+    "sku": "MG-CL-003",
+    "name": "Gentle Dish Soap 12oz",
+    "category": "cleaning",
+    "list_price": 9.5,
+    "case_pack": 24,
+    "status": "active",
+    "replacement_sku": null
+  },
+  {
+    "sku": "MG-CL-004",
+    "name": "Stainless Steel Polish 12oz",
+    "category": "cleaning",
+    "list_price": 7.75,
+    "case_pack": 12,
+    "status": "active",
+    "replacement_sku": null
+  },
+  {
+    "sku": "MG-CL-005",
+    "name": "Lavender Multi-Surface Spray 16oz",
+    "category": "cleaning",
+    "list_price": 11.25,
+    "case_pack": 24,
+    "status": "active",
+    "replacement_sku": null
+  },
+  {
+    "sku": "MG-KT-001",
+    "name": "Compostable Trash Bags 24ct",
+    "category": "kitchen",
+    "list_price": 12.5,
+    "case_pack": 24,
+    "status": "active",
+    "replacement_sku": null
+  },
+  {
+    "sku": "MG-KT-002",
+    "name": "Beeswax Food Wraps 18ct",
+    "category": "kitchen",
+    "list_price": 14,
+    "case_pack": 12,
+    "status": "discontinued",
+    "replacement_sku": "MG-KT-004"
+  },
+  {
+    "sku": "MG-KT-003",
+    "name": "Reusable Snack Bags 30ct",
+    "category": "kitchen",
+    "list_price": 11,
+    "case_pack": 24,
+    "status": "active",
+    "replacement_sku": null
+  },
+  {
+    "sku": "MG-KT-004",
+    "name": "Beeswax Food Wraps Plus 20ct",
+    "category": "kitchen",
+    "list_price": 15,
+    "case_pack": 12,
+    "status": "active",
+    "replacement_sku": null
+  },
+  {
+    "sku": "MG-KT-005",
+    "name": "Citrus Dish Soap Tablets 30ct",
+    "category": "kitchen",
+    "list_price": 6.25,
+    "case_pack": 24,
+    "status": "active",
+    "replacement_sku": null
+  },
+  {
+    "sku": "MG-LN-001",
+    "name": "Wool Dryer Balls 3ct",
+    "category": "laundry",
+    "list_price": 18.5,
+    "case_pack": 6,
+    "status": "active",
+    "replacement_sku": null
+  },
+  {
+    "sku": "MG-LN-002",
+    "name": "Fabric Freshener Spray 24oz",
+    "category": "laundry",
+    "list_price": 16,
+    "case_pack": 12,
+    "status": "active",
+    "replacement_sku": null
+  },
+  {
+    "sku": "MG-LN-003",
+    "name": "Stain Remover Pods 20ct",
+    "category": "laundry",
+    "list_price": 17.25,
+    "case_pack": 6,
+    "status": "active",
+    "replacement_sku": null
+  },
+  {
+    "sku": "MG-LN-004",
+    "name": "Fabric Refresh Spray 32oz",
+    "category": "laundry",
+    "list_price": 20,
+    "case_pack": 6,
+    "status": "active",
+    "replacement_sku": null
+  },
+  {
+    "sku": "MG-LN-005",
+    "name": "Dryer Sheets 40ct",
+    "category": "laundry",
+    "list_price": 9.25,
+    "case_pack": 24,
+    "status": "active",
+    "replacement_sku": null
+  },
+  {
+    "sku": "MG-ST-001",
+    "name": "Glass Storage Jar 8oz",
+    "category": "storage",
+    "list_price": 7.25,
+    "case_pack": 12,
+    "status": "active",
+    "replacement_sku": null
+  },
+  {
+    "sku": "MG-ST-002",
+    "name": "Drawer Liner Pads 60ct",
+    "category": "storage",
+    "list_price": 8,
+    "case_pack": 24,
+    "status": "active",
+    "replacement_sku": null
+  },
+  {
+    "sku": "MG-ST-003",
+    "name": "Bamboo Shelf Liner 8ft",
+    "category": "storage",
+    "list_price": 8.15,
+    "case_pack": 12,
+    "status": "active",
+    "replacement_sku": null
+  },
+  {
+    "sku": "MG-ST-004",
+    "name": "Cord Organizer Clips 4ct",
+    "category": "storage",
+    "list_price": 5.75,
+    "case_pack": 24,
+    "status": "active",
+    "replacement_sku": null
+  },
+  {
+    "sku": "MG-ST-005",
+    "name": "Cable Organizer Set 12ct",
+    "category": "storage",
+    "list_price": 6.5,
+    "case_pack": 12,
+    "status": "active",
+    "replacement_sku": null
+  }
+]

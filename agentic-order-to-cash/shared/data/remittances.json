@@ -1,0 +1,42 @@
+[
+  {
+    "remittance_id": "REM-3002",
+    "scenario": 6,
+    "retailer_id": "RET-HARBOR",
+    "payment_date": "2026-05-23",
+    "amount_paid": 16605,
+    "lines": [
+      {
+        "invoice_id": "INV-2044",
+        "invoice_amount": 18450,
+        "paid": 16605,
+        "deductions": [
+          {
+            "code": "EARLY-PAY",
+            "amount": 1845
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "remittance_id": "REM-3001",
+    "scenario": 7,
+    "retailer_id": "RET-SUMMIT",
+    "payment_date": "2026-06-20",
+    "amount_paid": 105327,
+    "lines": [
+      {
+        "invoice_id": "INV-2107",
+        "invoice_amount": 126900,
+        "paid": 105327,
+        "deductions": [
+          {
+            "code": "EARLY-PAY",
+            "amount": 21573
+          }
+        ]
+      }
+    ]
+  }
+]

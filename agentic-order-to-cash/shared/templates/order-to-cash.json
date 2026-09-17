@@ -1,0 +1,26 @@
+{
+  "id": "order-to-cash",
+  "label": "Order-to-Cash",
+  "description": "Customer orders in, entered and validated, then fulfilled against true lead time; settlements in, reconciled against contract terms. Exceptions stop at a human gate.",
+  "lanes": [
+    {
+      "id": "orders",
+      "label": "Order Entry",
+      "inputKind": "order",
+      "stages": [
+        { "id": "intake", "label": "Order Entry & Validation", "agentId": "intake" },
+        { "id": "fulfillment", "label": "Ship-Date Feasibility", "agentId": "fulfillment" },
+        { "id": "complete", "label": "Complete", "agentId": null }
+      ]
+    },
+    {
+      "id": "payments",
+      "label": "Accounts Receivable",
+      "inputKind": "remittance",
+      "stages": [
+        { "id": "deduction", "label": "Deduction Reconciliation", "agentId": "deduction" },
+        { "id": "complete", "label": "Complete", "agentId": null }
+      ]
+    }
+  ]
+}

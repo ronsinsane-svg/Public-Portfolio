@@ -1,0 +1,183 @@
+[
+  {
+    "type": "stage_start",
+    "runId": "run-ORD-1005",
+    "stageId": "fulfillment",
+    "agentId": "fulfillment",
+    "model": "claude-sonnet-4-6"
+  },
+  {
+    "type": "token",
+    "text": "I"
+  },
+  {
+    "type": "token",
+    "text": "'ll start by fetching the shipping schedule and checking inventory for the single"
+  },
+  {
+    "type": "token",
+    "text": " line item simultaneously."
+  },
+  {
+    "type": "tool_call",
+    "name": "get_ship_schedule",
+    "args": {}
+  },
+  {
+    "type": "tool_result",
+    "name": "get_ship_schedule",
+    "summary": "{\"today\":\"2026-07-08 (Wednesday)\",\"lead_time_days\":3,\"ship_days\":[\"Mon\",\"Wed\",\"Fri\"]}"
+  },
+  {
+    "type": "tool_call",
+    "name": "check_inventory",
+    "args": {
+      "sku": "MG-CL-005",
+      "date": "2026-07-10"
+    }
+  },
+  {
+    "type": "tool_result",
+    "name": "check_inventory",
+    "summary": "{\"sku\":\"MG-CL-005\",\"on_hand\":200,\"inbound\":[{\"date\":\"2026-07-16 (Thursday)\",\"qty\":1200}],\"requested_date\":\"2026-07-10 (Friday)\",\"today\":\"2026-07-08 (Wednesday)\",\"lead_time_days\":3,\"ship_days\":[\"Mon..."
+  },
+  {
+    "type": "usage",
+    "inputTokens": 1488,
+    "outputTokens": 122,
+    "latencyMs": 4136
+  },
+  {
+    "type": "token",
+    "text": "I have"
+  },
+  {
+    "type": "token",
+    "text": " all the data I need. Let me work through the feasibility analysis.\n\nThe order requests a ship date of "
+  },
+  {
+    "type": "token",
+    "text": "2026-07-10 (Friday). The lead time is 3 days, meaning the order must be cut"
+  },
+  {
+    "type": "token",
+    "text": " no later than 3 days before ship day — today is Wednesday July 8, and July"
+  },
+  {
+    "type": "token",
+    "text": " 10 is Friday, which is only 2 days away, so the lead"
+  },
+  {
+    "type": "token",
+    "text": " time requirement alone is not met (need to cut by July"
+  },
+  {
+    "type": "token",
+    "text": " 7 at the latest for a July 10 ship). Beyond the lead-time issue, on"
+  },
+  {
+    "type": "token",
+    "text": "-hand inventory is only 200 units against the required 720, a shortfall of 520 units."
+  },
+  {
+    "type": "token",
+    "text": " The next inbound receipt of 1,200 units lands on 2026-07-16 (Thursday), which is not a"
+  },
+  {
+    "type": "token",
+    "text": " ship day. The earliest ship day on or after July"
+  },
+  {
+    "type": "token",
+    "text": " 16 that also satisfies the 3-day lead time needs to be identified using"
+  },
+  {
+    "type": "token",
+    "text": " a tool result. The ship days are Mon, Wed,"
+  },
+  {
+    "type": "token",
+    "text": " Fri. July 16 is a Thursday, so the next valid ship day after that"
+  },
+  {
+    "type": "token",
+    "text": " would be Friday July 17. Let me verify the lead-time cut-off:"
+  },
+  {
+    "type": "token",
+    "text": " 3 days before July 17 is July 14, which is after today (July 8), so the lead time can be satisfied for a July 17"
+  },
+  {
+    "type": "token",
+    "text": " ship date. At that point, inventory available would be 200 on"
+  },
+  {
+    "type": "token",
+    "text": " hand + 1,200 inbound = 1,400 units, which comfortably covers the 720 needed."
+  },
+  {
+    "type": "verdict",
+    "verdict": {
+      "status": "exception",
+      "issues": [
+        {
+          "code": "INSUFFICIENT_INVENTORY_FOR_SHIP_DATE",
+          "summary": "On-hand inventory of 200 units is 520 units short of the 720 required, and the only inbound receipt (1,200 units on 2026-07-16) does not arrive until after the requested ship date of 2026-07-10.",
+          "evidence": [
+            {
+              "source": "check_inventory",
+              "ref": "MG-CL-005 / on_hand",
+              "quote": "on_hand: 200"
+            },
+            {
+              "source": "check_inventory",
+              "ref": "MG-CL-005 / inbound[0]",
+              "quote": "{\"date\":\"2026-07-16 (Thursday)\",\"qty\":1200}"
+            },
+            {
+              "source": "check_inventory",
+              "ref": "MG-CL-005 / requested_date",
+              "quote": "requested_date: 2026-07-10 (Friday)"
+            }
+          ]
+        },
+        {
+          "code": "LEAD_TIME_VIOLATION",
+          "summary": "The requested ship date of 2026-07-10 is only 2 calendar days from today (2026-07-08), which is less than the required 3-day processing lead time.",
+          "evidence": [
+            {
+              "source": "get_ship_schedule",
+              "ref": "lead_time_days",
+              "quote": "lead_time_days: 3"
+            },
+            {
+              "source": "get_ship_schedule",
+              "ref": "today",
+              "quote": "today: 2026-07-08 (Wednesday)"
+            },
+            {
+              "source": "check_inventory",
+              "ref": "requested_date",
+              "quote": "requested_date: 2026-07-10 (Friday)"
+            }
+          ]
+        }
+      ],
+      "proposed_fix": {
+        "description": "The earliest feasible ship date is 2026-07-17 (Friday). By that date the inbound receipt of 1,200 units on 2026-07-16 will have landed, bringing total available inventory to 1,400 units (200 on hand + 1,200 inbound), which fully covers the required 720 units. July 17 is a configured ship day (Friday), and with today being July 8, the 3-day lead time requirement is satisfied. Recommend updating requested_ship_date to 2026-07-17.",
+        "patch": "{\"id\":\"ORD-1005\",\"requested_ship_date\":\"2026-07-17\",\"lines\":[{\"sku\":\"MG-CL-005\",\"qty\":720,\"available_at_ship_date\":1400}]}"
+      },
+      "confidence": 0.97,
+      "explanation": "Two compounding issues block the requested ship date of 2026-07-10. First, with only 200 units on hand against a requirement of 720, there is a 520-unit shortfall; the sole inbound receipt of 1,200 units does not arrive until 2026-07-16, six days after the requested ship date. Second, July 10 is only 2 days from today, violating the 3-day processing lead time. The earliest date that resolves both issues is 2026-07-17: it is a valid ship day (Friday), the inbound stock will have arrived the day prior giving 1,400 available units, and the cut-off date of July 14 is well within the future."
+    }
+  },
+  {
+    "type": "usage",
+    "inputTokens": 1799,
+    "outputTokens": 1175,
+    "latencyMs": 19962
+  },
+  {
+    "type": "done"
+  }
+]

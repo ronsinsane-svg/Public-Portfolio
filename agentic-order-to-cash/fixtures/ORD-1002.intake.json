@@ -1,0 +1,275 @@
+[
+  {
+    "type": "stage_start",
+    "runId": "run-ORD-1002",
+    "stageId": "intake",
+    "agentId": "intake",
+    "model": "claude-sonnet-4-6"
+  },
+  {
+    "type": "token",
+    "text": "I'll"
+  },
+  {
+    "type": "token",
+    "text": " start by identifying the retailer and pulling their order history and contract details"
+  },
+  {
+    "type": "token",
+    "text": " all at once."
+  },
+  {
+    "type": "tool_call",
+    "name": "list_retailers",
+    "args": {}
+  },
+  {
+    "type": "tool_result",
+    "name": "list_retailers",
+    "summary": "[{\"retailer_id\":\"RET-SUMMIT\",\"retailer_name\":\"Summit Retail Group\"},{\"retailer_id\":\"RET-HARBOR\",\"retailer_name\":\"Harbor Wholesale\"},{\"retailer_id\":\"RET-CEDAR\",\"retailer_name\":\"Cedar Market S..."
+  },
+  {
+    "type": "tool_call",
+    "name": "check_order_history",
+    "args": {
+      "retailer_id": "harbor_wholesale"
+    }
+  },
+  {
+    "type": "tool_result",
+    "name": "check_order_history",
+    "summary": "[]"
+  },
+  {
+    "type": "usage",
+    "inputTokens": 1935,
+    "outputTokens": 102,
+    "latencyMs": 4040
+  },
+  {
+    "type": "token",
+    "text": "The"
+  },
+  {
+    "type": "token",
+    "text": " retailer is RET-HARBOR. The order history came back empty with the guessed ID,"
+  },
+  {
+    "type": "token",
+    "text": " so let me pull history and contract details using the confirmed retailer ID now."
+  },
+  {
+    "type": "tool_call",
+    "name": "check_order_history",
+    "args": {
+      "retailer_id": "RET-HARBOR"
+    }
+  },
+  {
+    "type": "tool_result",
+    "name": "check_order_history",
+    "summary": "[{\"id\":\"ORD-0912\",\"type\":\"edi\",\"status\":\"fulfilled\",\"retailer_id\":\"RET-HARBOR\",\"po_number\":\"HW-72018\",\"requested_ship_date\":\"2026-01-21\",\"lines\":[{\"sku\":\"MG-KT-003\",\"qty\":720,\"unit_price\":10.25},..."
+  },
+  {
+    "type": "tool_call",
+    "name": "get_contract_terms",
+    "args": {
+      "retailer_id": "RET-HARBOR"
+    }
+  },
+  {
+    "type": "tool_result",
+    "name": "get_contract_terms",
+    "summary": "{\"retailer_id\":\"RET-HARBOR\",\"retailer_name\":\"Harbor Wholesale\",\"payment_terms\":\"Net 30\",\"allowed_deduction_pct\":10,\"clauses\":[{\"id\":\"3.1\",\"title\":\"Payment terms\",\"text\":\"Buyer shall remit pa..."
+  },
+  {
+    "type": "tool_call",
+    "name": "get_price_list",
+    "args": {
+      "retailer_id": "RET-HARBOR"
+    }
+  },
+  {
+    "type": "tool_result",
+    "name": "get_price_list",
+    "summary": "{\"retailer_id\":\"RET-HARBOR\",\"price_list\":[{\"sku\":\"MG-CL-001\",\"contract_price\":7.85,\"effective\":\"2026-01-01\"},{\"sku\":\"MG-CL-002\",\"contract_price\":9.75,\"effective\":\"2026-01-01\"},{\"sku\":\"MG-CL-003\",..."
+  },
+  {
+    "type": "usage",
+    "inputTokens": 2177,
+    "outputTokens": 195,
+    "latencyMs": 3596
+  },
+  {
+    "type": "token",
+    "text": "Good"
+  },
+  {
+    "type": "token",
+    "text": " data. Now I need to identify the \"usual snack bags"
+  },
+  {
+    "type": "token",
+    "text": "\" SKU (clearly MG-KT-003,"
+  },
+  {
+    "type": "token",
+    "text": " ordered in 4 of 5 historical orders) and resolve the \""
+  },
+  {
+    "type": "token",
+    "text": "bamboo shelf liner\" SKU. Let me look up both"
+  },
+  {
+    "type": "token",
+    "text": " to confirm they're active, and also check the case"
+  },
+  {
+    "type": "token",
+    "text": " pack for MG-KT-003 to convert 40 cases"
+  },
+  {
+    "type": "token",
+    "text": " to units."
+  },
+  {
+    "type": "tool_call",
+    "name": "lookup_sku",
+    "args": {
+      "sku": "MG-KT-003"
+    }
+  },
+  {
+    "type": "tool_result",
+    "name": "lookup_sku",
+    "summary": "{\"sku\":\"MG-KT-003\",\"name\":\"Reusable Snack Bags 30ct\",\"category\":\"kitchen\",\"list_price\":11,\"case_pack\":24,\"status\":\"active\",\"replacement_sku\":null}"
+  },
+  {
+    "type": "tool_call",
+    "name": "lookup_sku",
+    "args": {
+      "sku": "MG-ST-001"
+    }
+  },
+  {
+    "type": "tool_result",
+    "name": "lookup_sku",
+    "summary": "{\"sku\":\"MG-ST-001\",\"name\":\"Glass Storage Jar 8oz\",\"category\":\"storage\",\"list_price\":7.25,\"case_pack\":12,\"status\":\"active\",\"replacement_sku\":null}"
+  },
+  {
+    "type": "tool_call",
+    "name": "lookup_sku",
+    "args": {
+      "sku": "MG-ST-002"
+    }
+  },
+  {
+    "type": "tool_result",
+    "name": "lookup_sku",
+    "summary": "{\"sku\":\"MG-ST-002\",\"name\":\"Drawer Liner Pads 60ct\",\"category\":\"storage\",\"list_price\":8,\"case_pack\":24,\"status\":\"active\",\"replacement_sku\":null}"
+  },
+  {
+    "type": "tool_call",
+    "name": "lookup_sku",
+    "args": {
+      "sku": "MG-ST-003"
+    }
+  },
+  {
+    "type": "tool_result",
+    "name": "lookup_sku",
+    "summary": "{\"sku\":\"MG-ST-003\",\"name\":\"Bamboo Shelf Liner 8ft\",\"category\":\"storage\",\"list_price\":8.15,\"case_pack\":12,\"status\":\"active\",\"replacement_sku\":null}"
+  },
+  {
+    "type": "tool_call",
+    "name": "lookup_sku",
+    "args": {
+      "sku": "MG-ST-004"
+    }
+  },
+  {
+    "type": "tool_result",
+    "name": "lookup_sku",
+    "summary": "{\"sku\":\"MG-ST-004\",\"name\":\"Cord Organizer Clips 4ct\",\"category\":\"storage\",\"list_price\":5.75,\"case_pack\":24,\"status\":\"active\",\"replacement_sku\":null}"
+  },
+  {
+    "type": "tool_call",
+    "name": "lookup_sku",
+    "args": {
+      "sku": "MG-ST-005"
+    }
+  },
+  {
+    "type": "tool_result",
+    "name": "lookup_sku",
+    "summary": "{\"sku\":\"MG-ST-005\",\"name\":\"Cable Organizer Set 12ct\",\"category\":\"storage\",\"list_price\":6.5,\"case_pack\":12,\"status\":\"active\",\"replacement_sku\":null}"
+  },
+  {
+    "type": "usage",
+    "inputTokens": 3790,
+    "outputTokens": 352,
+    "latencyMs": 6741
+  },
+  {
+    "type": "token",
+    "text": "I have"
+  },
+  {
+    "type": "token",
+    "text": " everything I need. Let me now compile the verdict.\n\nThe \""
+  },
+  {
+    "type": "token",
+    "text": "usual snack bags\" is clearly MG-KT-003 (Reusable Snack Bags 30ct), appearing in 4 of 5"
+  },
+  {
+    "type": "token",
+    "text": " historical orders. The \"bamboo shelf liner\" maps to MG-ST-003 (Bamboo Shelf Liner 8ft) — the"
+  },
+  {
+    "type": "token",
+    "text": " only bamboo shelf liner in the catalog.\n\nCase pack for MG-KT-003 is 24 units/"
+  },
+  {
+    "type": "token",
+    "text": "case, so 40 cases = 960 units. Case pack for MG-ST-003 is 12 units/case, so 10 cases = 120 units"
+  },
+  {
+    "type": "token",
+    "text": ". Contract prices: MG-KT-003 = $10.25"
+  },
+  {
+    "type": "token",
+    "text": ", MG-ST-003 = $7.35. Both SKUs are active.\n\nThe requested"
+  },
+  {
+    "type": "token",
+    "text": " ship date is \"before the 15th\" — interpreted"
+  },
+  {
+    "type": "token",
+    "text": " as 2026-07-15, which is in the future. No PO number was provided."
+  },
+  {
+    "type": "verdict",
+    "verdict": {
+      "status": "pass",
+      "issues": [],
+      "proposed_fix": {
+        "description": "Unstructured email parsed into canonical order. 'Usual snack bags' resolved to MG-KT-003 (Reusable Snack Bags 30ct) based on 4 of 5 historical orders (most recently ORD-0979). 'Bamboo shelf liner' resolved to MG-ST-003 (Bamboo Shelf Liner 8ft), the only bamboo shelf liner in the catalog. Quantities converted from cases to units using catalog case packs (MG-KT-003: 24/case → 40×24=960 units; MG-ST-003: 12/case → 10×12=120 units). Ship date set to 2026-07-15 per customer's 'before the 15th' request. No PO number provided.",
+        "patch": "{\"retailer_id\": \"RET-HARBOR\", \"po_number\": null, \"requested_ship_date\": \"2026-07-15\", \"lines\": [{\"sku\": \"MG-KT-003\", \"qty\": 960, \"unit_price\": 10.25}, {\"sku\": \"MG-ST-003\", \"qty\": 120, \"unit_price\": 7.35}], \"notes\": \"Customer provided no PO number — confirm with Deb at Harbor Wholesale before processing.\"}"
+      },
+      "confidence": 0.82,
+      "explanation": "All checks pass. Retailer resolved to RET-HARBOR (Harbor Wholesale). 'Usual snack bags' confidently matched to MG-KT-003 based on order history (4/5 past orders). 'Bamboo shelf liner' matched to MG-ST-003 (Bamboo Shelf Liner 8ft), the sole bamboo-named storage SKU in the catalog and on the contract price list — confidence is slightly discounted here as the customer called it 'new' and this SKU has appeared in prior orders (ORD-0962), which may warrant a human double-check. Both SKUs are active. Quantities (960 and 120 units) are exact multiples of their case packs (24 and 12 respectively). Contract prices applied. Ship date 2026-07-15 is in the future. No PO number was given."
+    }
+  },
+  {
+    "type": "usage",
+    "inputTokens": 4629,
+    "outputTokens": 881,
+    "latencyMs": 26546
+  },
+  {
+    "type": "done"
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "type": "stage_start",
+    "runId": "run-ORD-1004",
+    "stageId": "fulfillment",
+    "agentId": "fulfillment",
+    "model": "claude-sonnet-4-6"
+  },
+  {
+    "type": "token",
+    "text": "I'll start"
+  },
+  {
+    "type": "token",
+    "text": " by fetching the shipping schedule and checking inventory for both SKUs simultaneously"
+  },
+  {
+    "type": "token",
+    "text": ", since these calls are all independent of each other."
+  },
+  {
+    "type": "tool_call",
+    "name": "get_ship_schedule",
+    "args": {}
+  },
+  {
+    "type": "tool_result",
+    "name": "get_ship_schedule",
+    "summary": "{\"today\":\"2026-07-08 (Wednesday)\",\"lead_time_days\":3,\"ship_days\":[\"Mon\",\"Wed\",\"Fri\"]}"
+  },
+  {
+    "type": "tool_call",
+    "name": "check_inventory",
+    "args": {
+      "sku": "MG-KT-004",
+      "date": "2026-07-13"
+    }
+  },
+  {
+    "type": "tool_result",
+    "name": "check_inventory",
+    "summary": "{\"sku\":\"MG-KT-004\",\"on_hand\":3200,\"inbound\":[{\"date\":\"2026-07-14 (Tuesday)\",\"qty\":500}],\"requested_date\":\"2026-07-13 (Monday)\",\"today\":\"2026-07-08 (Wednesday)\",\"lead_time_days\":3,\"ship_days\":[\"Mon\"..."
+  },
+  {
+    "type": "tool_call",
+    "name": "check_inventory",
+    "args": {
+      "sku": "MG-ST-003",
+      "date": "2026-07-13"
+    }
+  },
+  {
+    "type": "tool_result",
+    "name": "check_inventory",
+    "summary": "{\"sku\":\"MG-ST-003\",\"on_hand\":3700,\"inbound\":[{\"date\":\"2026-07-15 (Wednesday)\",\"qty\":240}],\"requested_date\":\"2026-07-13 (Monday)\",\"today\":\"2026-07-08 (Wednesday)\",\"lead_time_days\":3,\"ship_days\":[\"Mo..."
+  },
+  {
+    "type": "usage",
+    "inputTokens": 1508,
+    "outputTokens": 193,
+    "latencyMs": 4532
+  },
+  {
+    "type": "token",
+    "text": "Now I have everything"
+  },
+  {
+    "type": "token",
+    "text": " I need. Let me work through the feasibility for both lines.\n\nThe lead time is 3 days, and"
+  },
+  {
+    "type": "token",
+    "text": " ships go out on Mon/Wed/Fri. Today is Wednesday 2026-07-08, so the earliest"
+  },
+  {
+    "type": "token",
+    "text": " a ship date can fall is 3 days from today. The requested ship date is Monday"
+  },
+  {
+    "type": "token",
+    "text": " 2026-07-13, which is a valid ship day.\n\nFor MG-KT-004 (qty 120):"
+  },
+  {
+    "type": "token",
+    "text": " on-hand is 3,200 — well above 120"
+  },
+  {
+    "type": "token",
+    "text": ". This line is fully feasible on 2026-07-13.\n\nFor MG-ST-003"
+  },
+  {
+    "type": "token",
+    "text": " (qty 240): on-hand is 3,700 — also well above 240. This line is also fully feasible on 2026-07-13.\n\nBoth"
+  },
+  {
+    "type": "token",
+    "text": " lines pass on stock and lead time. Submitting a"
+  },
+  {
+    "type": "token",
+    "text": " clean verdict now."
+  },
+  {
+    "type": "verdict",
+    "verdict": {
+      "status": "pass",
+      "issues": [],
+      "proposed_fix": null,
+      "confidence": 0.99,
+      "explanation": "Both lines are feasible for the requested ship date of 2026-07-13 (Monday). The shipping schedule confirms Monday is a valid ship day, and the 3-day process lead time is satisfied (today is Wednesday 2026-07-08, giving 5 calendar days of runway). MG-KT-004 requires 120 units against 3,200 on hand; MG-ST-003 requires 240 units against 3,700 on hand. Neither line relies on any inbound receipt to meet the order. No issues found."
+    }
+  },
+  {
+    "type": "usage",
+    "inputTokens": 2003,
+    "outputTokens": 440,
+    "latencyMs": 8289
+  },
+  {
+    "type": "done"
+  }
+]
