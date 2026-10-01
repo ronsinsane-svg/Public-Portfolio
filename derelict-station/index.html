@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Derelict Station</title>
+<meta name="description" content="Sweep a dead station with a scanner, find the failing systems, and bring them back online one circuit at a time.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Oxanium:wght@600;700&display=swap">
+<style>
+  /* One dark world on purpose: a maintenance terminal on a dead station. */
+  :root {
+    color-scheme: dark;
+    --ground: #06090d; --panel: #111922; --rule: #223140; --text: #d6dfe7; --muted: #8193a3;
+    --accent: #45e4ef; --ok: #63e77f; --warn: #ffa300;
+    --display: "Oxanium", "Eurostile", system-ui, sans-serif;
+    --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  }
+  [hidden] { display: none !important; }
+  html, body { height: 100%; margin: 0; background: var(--ground); color: var(--text); }
+  body {
+    font: 15px/1.5 var(--body); display: flex; flex-direction: column; align-items: center;
+    padding: max(12px, env(safe-area-inset-top)) 16px max(12px, env(safe-area-inset-bottom));
+    box-sizing: border-box; gap: 12px;
+  }
+  header { width: 100%; max-width: 1280px; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; }
+  .eyebrow { font: 500 11px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); width: 100%; }
+  h1 { font: 700 clamp(22px, 4vw, 30px)/1.1 var(--display); letter-spacing: .03em; margin: 0; }
+  .online { font: 500 13px var(--mono); color: var(--muted); }
+  .online span { color: var(--accent); font-variant-numeric: tabular-nums; }
+
+  .stage { position: relative; width: 320px; height: 240px; max-width: 100%; }
+  /* Canvases are the controls here: no tap highlight, text selection or
+     long-press callout flashing over them on touch screens. */
+  canvas { -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+  .stage canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; cursor: none; touch-action: none; }
+  .stage canvas:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  #loading { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; padding: 16px; text-align: center; color: var(--muted); font: 13px var(--mono); }
+  .win {
+    position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 10px; text-align: center;
+    background: rgba(6, 9, 13, .72); padding: 16px;
+  }
+  .win h2 { font: 700 calc(14px + 6px * var(--s, 1)) / 1.1 var(--display); color: var(--ok); margin: 0; letter-spacing: .04em; }
+  .win p { margin: 0; color: var(--text); }
+
+  footer { width: 100%; max-width: 1280px; min-height: 2.2em; }
+  #hint { margin: 0; text-align: center; color: var(--muted); font-size: 14px; }
+  #hint[data-found="yes"] { color: var(--warn); }
+
+  button {
+    font: 500 14px var(--body); color: var(--text); background: var(--ground);
+    border: 1px solid var(--rule); border-radius: 3px; padding: 7px 12px; cursor: pointer;
+  }
+  button:hover { border-color: var(--muted); }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  dialog {
+    background: var(--panel); color: var(--text); border: 1px solid var(--rule); border-radius: 4px;
+    padding: 16px; max-width: calc(100vw - 16px); max-height: calc(100dvh - 16px); box-sizing: border-box;
+  }
+  dialog::backdrop { background: rgba(3, 5, 8, .78); }
+  .panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  .panel-head h2 { font: 700 20px/1.1 var(--display); margin: 0; letter-spacing: .03em; }
+  #panel-state { margin: 4px 0 0; font: 500 13px var(--mono); color: var(--muted); }
+  #panel-state[data-state="live"] { color: var(--accent); }
+  #panel-state[data-state="online"] { color: var(--ok); }
+  .panel-main { display: flex; gap: 12px; align-items: center; justify-content: center; margin: 14px 0 10px; }
+  dialog[data-orient="h"] .panel-main { flex-direction: row-reverse; }
+  dialog[data-orient="v"] .panel-main { flex-direction: column; }
+  .panel-main canvas { display: block; image-rendering: pixelated; }
+  #board { cursor: pointer; touch-action: manipulation; }
+  #board:focus-visible, #cube:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  #cube { cursor: grab; touch-action: none; }
+  #cube:active { cursor: grabbing; }
+  #panel-note { margin: 0; color: var(--muted); font-size: 14px; max-width: 46ch; }
+  #panel-msg { margin: 6px 0 0; color: var(--ok); font-weight: 600; min-height: 1.5em; }
+  .panel-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 8px; font: 500 13px var(--mono); color: var(--muted); }
+  .panel-foot b { color: var(--text); font-variant-numeric: tabular-nums; }
+  .panel-buttons { display: flex; gap: 8px; }
+  #panel-hint { border-color: var(--warn); color: var(--warn); }
+</style>
+</head>
+<body>
+  <header id="top">
+    <div class="eyebrow">Maintenance scanner</div>
+    <h1>Derelict Station</h1>
+    <div class="online">Systems online <span id="online">0 / 4</span></div>
+  </header>
+
+  <main>
+    <div class="stage" id="stage">
+      <canvas id="scene" tabindex="0" aria-label="The station room seen through the scanner. Arrow keys move the scanner, Enter opens a detected system."></canvas>
+      <p id="loading">Powering up the scanner&hellip;</p>
+      <div class="win" id="win" hidden>
+        <h2>All systems online</h2>
+        <p id="win-stats"></p>
+        <button id="restart" type="button">Start over</button>
+      </div>
+    </div>
+  </main>
+
+  <footer id="below"><p id="hint" role="status" data-found="no"></p></footer>
+
+  <dialog id="panel" aria-labelledby="panel-title">
+    <div class="panel-head">
+      <div>
+        <h2 id="panel-title">Panel</h2>
+        <p id="panel-state" data-state="dead">No power</p>
+      </div>
+      <button id="panel-close" type="button">Close</button>
+    </div>
+    <div class="panel-main">
+      <canvas id="core" aria-hidden="true"></canvas>
+      <canvas id="board" tabindex="0" aria-label="Circuit panel. Click a tile to turn it; right-click or Shift turns it back. Arrow keys move, Enter turns."></canvas>
+      <canvas id="cube" tabindex="0" hidden aria-label="Circuit cube. Drag to turn the cube; click a tile to rotate it. Arrow keys turn the cube a quarter turn, W A S D move between tiles, Enter rotates."></canvas>
+    </div>
+    <p id="panel-note"></p>
+    <p id="panel-msg" role="status"></p>
+    <div class="panel-foot">
+      <span>Turns <b id="panel-turns">0</b></span>
+      <span class="panel-buttons">
+        <button id="panel-hint" type="button" hidden aria-label="Hint: fix one conduit">Hint</button>
+        <button id="panel-reset" type="button">Reset panel</button>
+      </span>
+    </div>
+  </dialog>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>

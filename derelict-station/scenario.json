@@ -1,0 +1,108 @@
+{
+  "title": "Derelict Station",
+  "scene": {
+    "image": "assets/scene/scene.png",
+    "size": [320, 240],
+    "sprites": {
+      "door": {
+        "image": "assets/scene/door.png",
+        "at": [212, 72],
+        "frames": 5,
+        "plays": "door"
+      },
+      "cube": {
+        "image": "assets/scene/cube.png",
+        "at": [96, 180],
+        "float_to": [148, 100]
+      },
+      "crate_a": {
+        "image": "assets/scene/crate.png",
+        "at": [82, 170],
+        "float_to": [74, 116]
+      },
+      "crate_b": {
+        "image": "assets/scene/crate.png",
+        "at": [50, 176],
+        "float_to": [36, 136]
+      },
+      "crate_c": {
+        "image": "assets/scene/crate_small.png",
+        "at": [124, 180],
+        "float_to": [184, 146]
+      }
+    },
+    "draw_order": ["door", "cube", "crate_a", "crate_b", "crate_c"]
+  },
+  "systems": [
+    {
+      "id": "lights",
+      "name": "Lighting relay",
+      "source": [0.134, 0.444, 0.06, 0.1, 1.0],
+      "requires": [],
+      "puzzle": {
+        "size": 5,
+        "seed": 31337,
+        "rule": "lock"
+      },
+      "outcome": {
+        "type": "lights"
+      },
+      "online": "Lights restored."
+    },
+    {
+      "id": "door",
+      "name": "Door lock",
+      "source": [0.63, 0.525, 0.04, 0.06, 1.0],
+      "requires": ["lights"],
+      "puzzle": {
+        "size": 5,
+        "seed": 48213,
+        "rule": "all"
+      },
+      "outcome": {
+        "type": "door",
+        "sprite": "door"
+      },
+      "online": "Door unlocked."
+    },
+    {
+      "id": "gravity",
+      "name": "Gravity control",
+      "source": [0.785, 0.489, 0.05, 0.07, 1.0],
+      "requires": ["door"],
+      "puzzle": {
+        "size": 5,
+        "seed": 77019,
+        "rule": "all"
+      },
+      "outcome": {
+        "type": "float",
+        "sprites": ["crate_a", "crate_b", "crate_c", "cube"]
+      },
+      "online": "Gravity off."
+    },
+    {
+      "id": "cube",
+      "name": "Drifting cube",
+      "source": [0.5, 0.467, 0.05, 0.07, 1.0],
+      "requires": ["gravity"],
+      "puzzle": {
+        "type": "cube",
+        "size": 3,
+        "seed": 90210,
+        "rule": "all",
+        "hints": {
+          "first_turns": 30,
+          "first_seconds": 120,
+          "next_turns": 20,
+          "next_seconds": 90
+        }
+      },
+      "outcome": {
+        "type": "glow",
+        "sprite": "cube"
+      },
+      "online": "Cube engaged."
+    }
+  ]
+}

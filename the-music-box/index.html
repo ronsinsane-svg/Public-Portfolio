@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Music Box</title>
+<style>
+:root{
+  --ink:#e4d7bd; --dim:#9d8f77; --faint:#6d6252;
+  --brass:#c9a15a; --brass-hi:#f2dda6;
+  --bg:#100d09; --panel:#1a1510; --panel-2:#221b13;
+  --parch:#e9dcbe; --parch-ink:#332616;
+  --edge:#3a2f21;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html,body{margin:0;padding:0}
+body{
+  background:
+    radial-gradient(1100px 620px at 50% -8%, #2a2015 0%, rgba(42,32,21,0) 62%),
+    radial-gradient(700px 500px at 50% 108%, #241c12 0%, rgba(36,28,18,0) 60%),
+    var(--bg);
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:var(--serif);
+  font-size:17px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+.wrap{max-width:900px;margin:0 auto;padding:38px 20px 80px}
+
+header{text-align:center;margin-bottom:30px}
+h1{
+  font-size:clamp(30px,6vw,46px); font-weight:400; margin:0;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--brass-hi);
+  text-shadow:0 0 26px rgba(201,161,90,.28), 0 2px 0 #000;
+}
+.sub{margin:.5em 0 0;color:var(--dim);font-style:italic;letter-spacing:.04em}
+
+.boxpanel{
+  background:linear-gradient(180deg,var(--panel-2),var(--panel));
+  border:1px solid var(--edge); border-radius:10px;
+  box-shadow:0 18px 50px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,225,180,.06);
+  padding:14px 14px 18px; margin-bottom:26px;
+}
+canvas{display:block;width:100%;height:330px;border-radius:6px}
+
+.controls{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin-top:14px}
+button{
+  font-family:var(--serif); font-size:15px; letter-spacing:.05em;
+  color:var(--ink); background:linear-gradient(180deg,#2e2418,#1d160e);
+  border:1px solid var(--edge); border-radius:5px;
+  padding:10px 18px; cursor:pointer; transition:.18s;
+}
+button:hover{border-color:var(--brass);color:var(--brass-hi);box-shadow:0 0 18px rgba(201,161,90,.18)}
+button:active{transform:translateY(1px)}
+button:disabled{opacity:.5;cursor:default;box-shadow:none;border-color:var(--edge);color:var(--faint)}
+button.primary{
+  background:linear-gradient(180deg,#6a5227,#3d2f16);
+  border-color:#8a6c34;color:var(--brass-hi);
+  box-shadow:0 0 22px rgba(201,161,90,.16), inset 0 1px 0 rgba(255,225,170,.18);
+}
+button.primary:hover{box-shadow:0 0 30px rgba(201,161,90,.34)}
+button.ghost{background:none;border-color:#332a1e;color:var(--faint);font-size:13px}
+button.ghost:hover{color:var(--dim);border-color:#4a3d2b;box-shadow:none}
+#hintBtn{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+#hintBtn.holding{
+  background:linear-gradient(180deg,#151009,#0c0906);
+  border-color:#5a4a30;color:var(--faint);
+  box-shadow:inset 0 2px 8px rgba(0,0,0,.8);
+}
+.kbd{
+  display:inline-block;margin-left:8px;padding:1px 7px;
+  font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  border:1px solid #4d3d2a;border-radius:3px;color:var(--faint);vertical-align:1px;
+}
+.eyes{
+  position:fixed;inset:0;z-index:40;pointer-events:none;
+  background:radial-gradient(130% 95% at 50% 50%, rgba(7,5,3,.94) 0%, #000 68%);
+  opacity:0;transition:opacity .28s ease;
+  display:flex;align-items:center;justify-content:center;
+}
+.eyes.on{opacity:1;transition:opacity .65s ease}
+.eyes span{
+  color:#54462f;font-style:italic;font-size:15px;letter-spacing:.16em;
+  text-align:center;padding:0 26px;
+  opacity:0;transition:opacity 1.5s ease .8s;
+}
+.eyes.on span{opacity:1}
+.vol{display:flex;align-items:center;gap:8px;color:var(--faint);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase}
+.vol input{width:88px;accent-color:var(--brass)}
+.status{text-align:center;color:var(--dim);font-size:14px;letter-spacing:.06em;margin:12px 0 0;font-style:italic}
+
+.tray{display:grid;grid-template-columns:repeat(auto-fit,minmax(98px,1fr));gap:10px;margin-bottom:14px}
+.slot{display:flex;flex-direction:column;align-items:center;gap:6px}
+.slotnum{font-size:11px;letter-spacing:.22em;color:var(--faint)}
+.slot.locked .slotnum{color:var(--brass)}
+.plate{
+  width:100%; position:relative; cursor:pointer;
+  background:linear-gradient(160deg,#382c1c,#241c12);
+  border:1px solid #443626; border-radius:7px;
+  padding:9px 7px 7px; transition:.2s;
+  box-shadow:inset 0 1px 0 rgba(255,220,160,.07), 0 3px 10px rgba(0,0,0,.4);
+}
+.plate:hover{border-color:var(--brass);transform:translateY(-2px)}
+.plate:focus-visible{outline:2px solid var(--brass-hi);outline-offset:2px}
+.plate.sel{
+  border-color:var(--brass-hi);
+  box-shadow:0 0 0 1px var(--brass-hi), 0 0 26px rgba(242,221,166,.4);
+  transform:translateY(-4px);
+}
+.plate.lock{
+  cursor:default;
+  background:linear-gradient(160deg,#6d5527,#3c2e15);
+  border-color:#a5813c;
+  box-shadow:inset 0 1px 0 rgba(255,230,170,.22), 0 0 22px rgba(201,161,90,.24);
+}
+.plate.lock:hover{transform:none}
+.plate.ring{animation:ring 1s ease-out}
+@keyframes ring{
+  0%{box-shadow:0 0 0 0 rgba(242,221,166,.85), inset 0 1px 0 rgba(255,230,170,.22)}
+  100%{box-shadow:0 0 0 26px rgba(242,221,166,0), inset 0 1px 0 rgba(255,230,170,.22)}
+}
+.glyph{display:block;margin:0 auto 4px;color:var(--brass);opacity:.9}
+.plate.lock .glyph{color:var(--brass-hi)}
+.pegs{display:block;width:100%;height:auto}
+.audition{
+  position:absolute;top:4px;right:4px;
+  width:20px;height:20px;padding:0;font-size:11px;line-height:1;
+  border-radius:50%;border:1px solid #4d3d2a;background:#191309;color:var(--dim);
+}
+.audition:hover{color:var(--brass-hi);border-color:var(--brass)}
+.helptext{color:var(--faint);font-size:13.5px;text-align:center;margin:0 0 30px;font-style:italic;line-height:1.7}
+
+.versepanel{
+  background:radial-gradient(120% 100% at 50% 0%, #f1e6cb 0%, var(--parch) 55%, #dccfae 100%);
+  color:var(--parch-ink);
+  border-radius:6px; padding:34px 30px 26px;
+  box-shadow:0 20px 50px rgba(0,0,0,.55), inset 0 0 60px rgba(150,120,70,.16);
+  margin-bottom:22px;
+}
+.verse{font-size:clamp(17px,2.6vw,20px);line-height:2.05;text-align:center}
+.vline{
+  transition:filter 1.5s ease, opacity 1.5s ease, text-shadow 1.5s ease;
+  filter:blur(4.6px); opacity:.4; user-select:none; -webkit-user-select:none;
+}
+.vline.clear{filter:none;opacity:1;user-select:text;-webkit-user-select:text}
+.vline.justclear{animation:warm 2.4s ease-out}
+@keyframes warm{
+  0%{text-shadow:0 0 26px rgba(190,140,40,.95)}
+  100%{text-shadow:0 0 0 rgba(190,140,40,0)}
+}
+.dedication{text-align:center;margin:26px 0 0;font-style:italic;font-size:15px;color:#6b5636}
+.redacted{
+  filter:blur(1.4px); opacity:.72; letter-spacing:-.06em;
+  text-decoration:line-through; text-decoration-thickness:1.5px;
+  user-select:none;-webkit-user-select:none;
+}
+.revealed{
+  filter:none;opacity:1;text-decoration:none;letter-spacing:.14em;
+  font-style:normal;font-weight:600;color:#7a5a14;animation:warm 3s ease-out;
+}
+
+.memory{border-left:2px solid var(--brass);padding:6px 4px 6px 22px;margin-bottom:22px;animation:fadein 3s ease both}
+@keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.memory h2{font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:var(--brass);font-weight:400;margin:0 0 14px}
+.memory p{margin:0 0 1em;color:#cdbfa5}
+.memory p:last-child{margin-bottom:0}
+
+footer{text-align:center;margin-top:34px}
+
+.overlay{
+  position:fixed;inset:0;z-index:50;
+  background:radial-gradient(700px 500px at 50% 40%, #1d1710 0%, #0a0806 75%);
+  display:flex;align-items:center;justify-content:center;padding:26px;
+  transition:opacity .9s ease; overflow:auto;
+}
+.overlay.gone{opacity:0;pointer-events:none}
+.introbox{max-width:560px;text-align:center}
+.introbox p{color:var(--dim);margin:0 0 1.1em;line-height:1.85}
+.introbox p.last{color:var(--ink)}
+.introbox h1{margin-bottom:.3em}
+
+.gmpanel{
+  position:fixed;right:14px;bottom:14px;z-index:60;width:280px;
+  background:#0d0a06;border:1px solid var(--brass);border-radius:7px;
+  padding:14px 16px;font-size:13px;color:var(--dim);
+  box-shadow:0 14px 40px rgba(0,0,0,.75);
+}
+.gmpanel h3{margin:0 0 8px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);font-weight:400}
+.gmpanel p{margin:0 0 8px;line-height:1.5}
+.gmpanel code{color:var(--brass-hi);font-family:ui-monospace,Consolas,monospace;font-size:12px;letter-spacing:.04em}
+.gmpanel button{width:100%;margin-top:6px;font-size:12.5px;padding:7px}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>The Music Box</h1>
+    <p class="sub">found among your mother's things</p>
+  </header>
+
+  <section class="boxpanel">
+    <canvas id="cyl"></canvas>
+    <div class="controls">
+      <button id="playBtn" class="primary">Turn the key</button>
+      <button id="hintBtn" title="Press and hold">Close your eyes and remember<span class="kbd">hold</span></button>
+      <div class="vol"><label for="vol">vol</label><input type="range" id="vol" min="0" max="100" value="78"></div>
+    </div>
+    <p class="status" id="progress"></p>
+  </section>
+
+  <section class="tray" id="tray"></section>
+  <p class="helptext">
+    Click a plate to lift it, then click another to set it in that place.<br>
+    The small &#9834; plays one plate alone. Turn the key to hear the cylinder all the way through.<br>
+    Any plate that is where it belongs will lock, and stay locked.<br>
+    <em>Press and hold</em> to close your eyes. What you hear there is buried, and comes back only as you remember.
+  </p>
+
+  <section class="versepanel">
+    <div class="verse" id="verse"></div>
+    <p class="dedication">for <span id="theName" class="redacted">&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</span>, who has no temples and one paladin</p>
+  </section>
+
+  <section class="memory" id="memory" hidden></section>
+
+
+  <footer><button id="resetBtn" class="ghost">Scatter the pegs again</button></footer>
+</div>
+
+<div class="overlay" id="intro">
+  <div class="introbox">
+    <h1>The Music Box</h1>
+    <p class="sub" style="margin-bottom:1.8em">found among your mother's things</p>
+    <p>The lid is warped and the brass has gone green at the hinges. It has been at the bottom of your pack since the beginning of your journey, and you have never quite been able to say why you kept it.</p>
+    <p>The cylinder still turns. But the pegs have been moved, pulled and reset in the wrong order. The way a child might. Or the way something very careful might, if it wanted a song to stop being a song.</p>
+    <p class="last">You know this tune.<br>You are almost certain you know this tune.</p>
+    <button class="primary" id="startBtn" style="margin-top:14px">Turn the key</button>
+  </div>
+</div>
+
+<div class="eyes" id="eyes" aria-hidden="true"><span>you can almost hear her</span></div>
+
+<div class="gmpanel" id="gm" hidden>
+  <h3>GM solution</h3>
+  <p>Correct order, position I to VIII:</p>
+  <p><code id="gmSolution"></code></p>
+  <p>Currently in place: <code id="gmNow"></code></p>
+  <button id="gmReveal">Reveal everything</button>
+  <button id="gmClose" class="ghost">Close</button>
+</div>
+
+<script>
+"use strict";
+/* ==========================================================================
+   EDIT ANYTHING IN THIS BLOCK - it is all plain text.
+   (Heads up: this is also the answer key. Don't let the player read source.)
+   ========================================================================== */
+
+// One line per phrase-plate. Line 1 clears when plate 1 is in place, etc.
+var VERSE = [
+  "Sleep now, Briar rose. I sing you the name",
+  "of our old matron goddess, unmade and unnamed.",
+  "There was one before three. There was one who was more:",
+  "she opened her hands and the first morning poured.",
+  "They divided her sky. They divided her sea.",
+  "Then they took up her name and forbade it to be.",
+  "But a song is a door that no godling can bar,",
+  "so sing, my Briar rose, and know whose you are."
+];
+
+// The name the magic eats. Rendered only on a full solve.
+var THE_NAME = "Namela";
+
+// What surfaces once the whole lullaby is remembered.
+var MEMORY_TITLE = "and then you remember the rest of it";
+var MEMORY = [
+  "You are seven years old. It is the night the roof leaks, and your mother has dragged your bed into the dry corner and is not angry about it, which is how you know that something is wrong.",
+  "She sings this with her eyes open, watching the door.",
+  "When it is finished you ask her why she never sings it outside. You watch her decide not to lie to you.",
+  "“Because there are three gods,” she says, “and a god is only a name that can hear itself. Say one loud enough and it turns its head.”",
+  "She tucks the blanket under your feet.",
+  "“This one, they took apart. They hid the pieces in things too small for them to bother watching. Songs. Cradles. Girls.”",
+  "You ask if that means she is gone.",
+  "Your mother laughs. Quietly, so the roof will not carry it.",
+  "“It means she is everywhere they never thought to look. Sleep now. You will have forgotten most of this by morning.” She puts out the candle. “That is all right, Briar. It keeps.”"
+];
+
+/* ==========================================================================
+   MELODY - "Merry-Go-Round of Life" (Joe Hisaishi), main theme.
+   D minor, 3/4. Transcribed from two music-box arrangements that agree.
+   8 plates x 2 bars x 3 beats. null = the previous note is still ringing.
+   ========================================================================== */
+var TEMPO = 100;
+var BEAT = 60 / TEMPO;
+var BEATS_PER_PLATE = 6;
+var NPLATES = 8;
+var TOTAL = NPLATES * BEATS_PER_PLATE * BEAT;
+
+var A4=69, D5=74, E5=76, F5=77, G5=79, A5=81, Bb5=82, B5=83, C6=84, D6=86, E6=88;
+
+var PLATES = [
+  [ A5, null, A5,   G5, F5,   E5  ],
+  [ F5, null, null, D5, F5,   A5  ],
+  [ D6, null, D6,   D6, C6,   Bb5 ],
+  [ C6, null, null, F5, A5,   C6  ],
+  [ E6, null, D6,   C6, B5,   C6  ],
+  [ D6, null, C6,   B5, null, A5  ],
+  [ G5, F5,   G5,   A5, G5,   D5  ],
+  [ E5, null, null, A4, D5,   F5  ]
+];
+
+// Bass root per bar. Belongs to the SLOT and only sounds once locked, so the
+// harmony fills back in behind her as she remembers.
+var BASS = [[55,57],[50,50],[55,48],[53,48],[47,52],[57,55],[53,55],[57,57]];
+
+var LANES = [A4,D5,E5,F5,G5,A5,Bb5,B5,C6,D6,E6];
+function laneOf(m){ return LANES.indexOf(m); }
+
+var GLYPHS = [
+  '<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.3" class="f"/>',
+  '<path d="M12 4.5 A7.5 7.5 0 1 0 19 15 A6 6 0 1 1 12 4.5 Z" class="f"/>',
+  '<path d="M5 12 Q8.5 6 12 12 T19 12"/><path d="M5 17 Q8.5 11 12 17 T19 17"/>',
+  '<path d="M12 3.5 L14.4 9.6 L20.5 12 L14.4 14.4 L12 20.5 L9.6 14.4 L3.5 12 L9.6 9.6 Z" class="f"/>',
+  '<path d="M12 4 L19.5 12 L12 20 L4.5 12 Z"/><circle cx="12" cy="12" r="1.9" class="f"/>',
+  '<path d="M12 4 L12 20"/><path d="M6.5 8.5 L17.5 8.5"/><path d="M8 15 L16 15"/>',
+  '<path d="M4.5 15.5 A7.5 7.5 0 0 1 19.5 15.5"/><circle cx="12" cy="18.5" r="2.1" class="f"/>',
+  '<circle cx="12" cy="6.5" r="2" class="f"/><circle cx="6.8" cy="15.5" r="2" class="f"/><circle cx="17.2" cy="15.5" r="2" class="f"/>'
+];
+var GLYPH_NAMES = ["ring","crescent","waves","star","diamond","triple-bar","arch","trefoil"];
+var NUMERALS = ["I","II","III","IV","V","VI","VII","VIII"];
+
+/* ==========================================================================
+   AUDIO
+   ========================================================================== */
+var AC=null, master=null, revSend=null, noiseBuf=null;
+var live = [];
+
+function track(node){
+  live.push(node);
+  node.onended = function(){
+    var i = live.indexOf(node);
+    if(i >= 0) live.splice(i,1);
+  };
+}
+function initAudio(){
+  AC = new (window.AudioContext || window.webkitAudioContext)();
+  master = AC.createGain();
+  master.gain.value = 0.78;
+  var comp = AC.createDynamicsCompressor();
+  comp.threshold.value=-14; comp.knee.value=20; comp.ratio.value=7;
+  comp.attack.value=0.004; comp.release.value=0.2;
+  master.connect(comp); comp.connect(AC.destination);
+
+  var conv = AC.createConvolver();
+  conv.buffer = makeIR(2.6, 2.4);
+  revSend = AC.createGain(); revSend.gain.value = 0.3;
+  revSend.connect(conv); conv.connect(master);
+
+  getNoise();          // build it now, not mid-note
+}
+function makeIR(dur, decay){
+  var sr = AC.sampleRate, len = Math.max(1, Math.floor(sr*dur));
+  var buf = AC.createBuffer(2, len, sr);
+  for(var c=0;c<2;c++){
+    var d = buf.getChannelData(c);
+    for(var i=0;i<len;i++) d[i] = (Math.random()*2-1) * Math.pow(1-i/len, decay);
+  }
+  return buf;
+}
+// Eight seconds, not a fraction of one. A short noise loop stops sounding like
+// noise and starts sounding like a pulse - you hear the splice.
+var NOISE_SECONDS = 8;
+function getNoise(){
+  if(!noiseBuf){
+    var n = Math.floor(AC.sampleRate*NOISE_SECONDS);
+    noiseBuf = AC.createBuffer(1, n, AC.sampleRate);
+    var d = noiseBuf.getChannelData(0);
+    for(var i=0;i<n;i++) d[i] = Math.random()*2-1;
+  }
+  return noiseBuf;
+}
+function hz(m){ return 440*Math.pow(2,(m-69)/12); }
+
+// A struck music-box tine.
+function strike(midi, when, o){
+  o = o || {};
+  if(!AC) return;
+  var g = (o.gain != null) ? o.gain : 0.5;
+  var dest = o.dest || master;
+  var f = hz(midi);
+  var dur = (o.dur != null) ? o.dur : Math.max(0.55, 2.9 - (midi-69)*0.052);
+
+  var out = AC.createGain();
+  out.gain.setValueAtTime(0.0001, when);
+  out.gain.linearRampToValueAtTime(g, when+0.004);
+  out.gain.exponentialRampToValueAtTime(0.0001, when+dur);
+  out.connect(dest);
+  if(o.rev !== false && revSend) out.connect(revSend);
+
+  var parts = [[1,1],[2.0,0.30],[3.02,0.11],[5.41,0.045]];
+  for(var i=0;i<parts.length;i++){
+    var osc = AC.createOscillator();
+    osc.type = "sine";
+    osc.frequency.value = f*parts[i][0];
+    if(o.detune || o.detuneFixed){
+      osc.detune.value = (o.detuneFixed || 0) + (o.detune ? (Math.random()*2-1)*o.detune : 0);
+    }
+    var og = AC.createGain(); og.gain.value = parts[i][1];
+    osc.connect(og); og.connect(out);
+    osc.start(when); osc.stop(when+dur+0.05);
+    track(osc);
+  }
+  var src = AC.createBufferSource(); src.buffer = getNoise();
+  var bp = AC.createBiquadFilter(); bp.type="bandpass"; bp.frequency.value=f*4.2; bp.Q.value=1.4;
+  var ng = AC.createGain();
+  ng.gain.setValueAtTime(g*0.16, when);
+  ng.gain.exponentialRampToValueAtTime(0.0001, when+0.055);
+  src.connect(bp); bp.connect(ng); ng.connect(dest);
+  src.start(when, Math.random()*(NOISE_SECONDS-0.5));   // a different grain each strike
+  src.stop(when+0.1);
+  track(src);
+}
+
+function bassNote(midi, when, gain){
+  if(!AC) return;
+  var f = hz(midi), dur = 2.2;
+  var out = AC.createGain();
+  out.gain.setValueAtTime(0.0001, when);
+  out.gain.linearRampToValueAtTime(gain==null?0.20:gain, when+0.012);
+  out.gain.exponentialRampToValueAtTime(0.0001, when+dur);
+  var lp = AC.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=760;
+  out.connect(lp); lp.connect(master);
+  if(revSend) lp.connect(revSend);
+  var parts = [[1,1],[2,0.28],[3,0.07]];
+  for(var i=0;i<parts.length;i++){
+    var o = AC.createOscillator(); o.type="sine"; o.frequency.value=f*parts[i][0];
+    var g = AC.createGain(); g.gain.value=parts[i][1];
+    o.connect(g); g.connect(out);
+    o.start(when); o.stop(when+dur+0.05);
+    track(o);
+  }
+}
+
+function stopAllSound(){
+  for(var i=0;i<live.length;i++){ try{ live[i].stop(); }catch(e){} }
+  live = [];
+}
+
+/* ==========================================================================
+   STATE
+   ========================================================================== */
+var SAVE_KEY = "namela-music-box-v1";
+var state = { order:[], locked:[] };
+var selected = null;
+var solvedShown = false;
+
+function derangement(n){
+  var a = [], i, j, t, guard, ok;
+  for(i=0;i<n;i++) a.push(i);
+  for(guard=0; guard<400; guard++){
+    for(i=n-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); t=a[i]; a[i]=a[j]; a[j]=t; }
+    ok = true;
+    for(i=0;i<n;i++) if(a[i]===i) ok = false;
+    if(ok) return a;
+  }
+  return a;
+}
+function freshState(){ return { order: derangement(NPLATES), locked: [] }; }
+function save(){ try{ localStorage.setItem(SAVE_KEY, JSON.stringify(state)); }catch(e){} }
+function load(){
+  try{
+    var raw = localStorage.getItem(SAVE_KEY);
+    if(!raw) return false;
+    var s = JSON.parse(raw);
+    if(!s || !(s.order instanceof Array) || s.order.length !== NPLATES) return false;
+    var sorted = s.order.slice().sort(function(a,b){ return a-b; }).join(",");
+    if(sorted !== "0,1,2,3,4,5,6,7") return false;
+    state = { order: s.order, locked: (s.locked instanceof Array) ? s.locked : [] };
+    return true;
+  }catch(e){ return false; }
+}
+function isLocked(s){ return state.locked.indexOf(s) !== -1; }
+function lockedCount(){ return state.locked.length; }
+
+/* ==========================================================================
+   CANVAS - the cylinder and the marimba
+   ========================================================================== */
+var cv = document.getElementById("cyl");
+var ctx = cv.getContext("2d");
+var W=0, H=0, geo=null;
+var CONTACT = Math.PI/2 - 0.30;
+var rotPhase = 0;
+var lastFrame = 0;
+var flash = [];
+for(var fi=0; fi<LANES.length; fi++) flash.push(-99);
+
+function layout(){
+  var dpr = window.devicePixelRatio || 1;
+  W = cv.clientWidth; H = cv.clientHeight;
+  if(!W || !H) return;
+  cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+
+  var pad = Math.max(30, Math.min(64, W*0.07));
+  var xL = pad, xR = W - pad;
+  var R = Math.min(72, H*0.24);
+  var cy = 34 + R;
+  var inset = Math.max(16, (xR-xL)*0.045);
+  geo = {
+    xL:xL, xR:xR, R:R, cy:cy,
+    cap: Math.max(11, (xR-xL)*0.022),
+    lane0: xL + inset,
+    laneW: (xR-xL-inset*2)/(LANES.length-1),
+    barTop: cy + R + 16,
+    barMax: Math.max(56, H - (cy+R) - 34)
+  };
+}
+function laneX(i){ return geo.lane0 + i*geo.laneW; }
+function wrapPi(a){
+  a = a % (Math.PI*2);
+  if(a >= Math.PI) a -= Math.PI*2;
+  if(a < -Math.PI) a += Math.PI*2;
+  return a;
+}
+
+function drawBars(now){
+  var n = LANES.length, bw = Math.min(geo.laneW*0.72, 26);
+  for(var i=0;i<n;i++){
+    var x = laneX(i), len = geo.barMax * (1 - (i/n)*0.42);
+    var hot = Math.max(0, 1 - (now - flash[i])/0.42);
+    var y = geo.barTop + (hot>0 ? 2.4*hot : 0);
+    ctx.save();
+    ctx.beginPath();
+    if(ctx.roundRect) ctx.roundRect(x-bw/2, y, bw, len, 4);
+    else ctx.rect(x-bw/2, y, bw, len);
+    var g = ctx.createLinearGradient(x-bw/2,0,x+bw/2,0);
+    if(hot>0){
+      g.addColorStop(0,"#8a6c30");
+      g.addColorStop(0.35,"rgba(242,221,166,"+(0.55+0.45*hot)+")");
+      g.addColorStop(1,"#6d5528");
+      ctx.shadowColor = "rgba(242,221,166,"+(0.55*hot)+")";
+      ctx.shadowBlur = 22*hot;
+    } else {
+      g.addColorStop(0,"#4a3b26"); g.addColorStop(0.4,"#7c6642"); g.addColorStop(1,"#3a2e1e");
+    }
+    ctx.fillStyle = g; ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = hot>0 ? "rgba(255,240,200,.75)" : "rgba(0,0,0,.5)";
+    ctx.lineWidth = 1; ctx.stroke();
+    ctx.restore();
+  }
+}
+
+function drawCylinder(playingSlot){
+  var xL=geo.xL, xR=geo.xR, R=geo.R, cy=geo.cy, cap=geo.cap;
+  var s, i;
+
+  ctx.save();
+  ctx.beginPath(); ctx.rect(xL, cy-R, xR-xL, R*2); ctx.clip();
+  var body = ctx.createLinearGradient(0, cy-R, 0, cy+R);
+  body.addColorStop(0,   "#221a10");
+  body.addColorStop(0.18,"#5c4826");
+  body.addColorStop(0.42,"#a58449");
+  body.addColorStop(0.58,"#8d7040");
+  body.addColorStop(0.86,"#3a2c19");
+  body.addColorStop(1,   "#191208");
+  ctx.fillStyle = body; ctx.fillRect(xL, cy-R, xR-xL, R*2);
+
+  var lim = Math.PI/2 - 0.002;
+  for(s=0;s<NPLATES;s++){
+    var mid = wrapPi(CONTACT + Math.PI*2*(rotPhase - (s+0.5)/NPLATES));
+    var a1 = mid - Math.PI/NPLATES, a2 = mid + Math.PI/NPLATES;
+    if(a2 <= -lim || a1 >= lim) continue;
+    if(a1 < -lim) a1 = -lim;
+    if(a2 >  lim) a2 =  lim;
+    var y1 = cy + R*Math.sin(a1), y2 = cy + R*Math.sin(a2);
+    var lk = isLocked(s), cur = (playingSlot === s);
+    ctx.fillStyle = lk ? (cur ? "rgba(255,226,160,.34)" : "rgba(214,171,92,.26)")
+                       : (cur ? "rgba(220,210,190,.14)" : "rgba(60,52,40,.20)");
+    ctx.fillRect(xL, y1, xR-xL, Math.max(0.6, y2-y1));
+    ctx.strokeStyle = lk ? "rgba(255,232,178,.5)" : "rgba(30,24,16,.5)";
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(xL, y1); ctx.lineTo(xR, y1); ctx.stroke();
+  }
+
+  ctx.strokeStyle = "rgba(40,32,20,.28)"; ctx.lineWidth = 1;
+  for(i=0;i<LANES.length;i++){
+    var lx = laneX(i);
+    ctx.beginPath(); ctx.moveTo(lx, cy-R); ctx.lineTo(lx, cy+R); ctx.stroke();
+  }
+  ctx.restore();
+
+  for(var slot=0; slot<NPLATES; slot++){
+    var plate = PLATES[state.order[slot]];
+    for(var b=0;b<BEATS_PER_PLATE;b++){
+      var m = plate[b];
+      if(m == null) continue;
+      var tN = (slot*BEATS_PER_PLATE + b)/(NPLATES*BEATS_PER_PLATE);
+      var a = wrapPi(CONTACT + Math.PI*2*(rotPhase - tN));
+      var d = Math.cos(a);
+      if(d <= 0.02) continue;
+      var px = laneX(laneOf(m)), py = cy + R*Math.sin(a);
+      var struck = Math.abs(a - CONTACT) < 0.16;
+      ctx.beginPath();
+      ctx.ellipse(px, py, 2.2 + 3.4*d, 3.4, 0, 0, Math.PI*2);
+      if(struck){
+        ctx.fillStyle = "#fff4d4";
+        ctx.shadowColor = "rgba(255,240,200,.9)"; ctx.shadowBlur = 14;
+      } else if(isLocked(slot)){
+        ctx.fillStyle = "rgb("+Math.round(255*d+40)+","+Math.round(226*d+34)+","+Math.round(160*d+26)+")";
+      } else {
+        ctx.fillStyle = "rgb("+Math.round(190*d+34)+","+Math.round(176*d+30)+","+Math.round(150*d+24)+")";
+      }
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+  }
+
+  var ends = [xL, xR];
+  for(i=0;i<2;i++){
+    var x = ends[i];
+    var rg = ctx.createRadialGradient(x-cap*0.3, cy-R*0.35, 2, x, cy, R);
+    rg.addColorStop(0,"#c9a15a"); rg.addColorStop(0.55,"#7d6335"); rg.addColorStop(1,"#2a2012");
+    ctx.beginPath(); ctx.ellipse(x, cy, cap, R, 0, 0, Math.PI*2);
+    ctx.fillStyle = rg; ctx.fill();
+    ctx.strokeStyle = "rgba(20,15,8,.85)"; ctx.lineWidth = 1.4; ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(x, cy, cap*0.30, R*0.14, 0, 0, Math.PI*2);
+    ctx.fillStyle = "#1b140b"; ctx.fill();
+    var ax = (i===0) ? x-cap-14 : x+cap;
+    ctx.fillStyle = "#6a5530"; ctx.fillRect(ax, cy-2.5, 14, 5);
+  }
+}
+
+function draw(ts){
+  requestAnimationFrame(draw);
+  if(!geo){ layout(); if(!geo) return; }
+  var now = AC ? AC.currentTime : (ts/1000);
+  var dt = lastFrame ? Math.min(0.1, (ts-lastFrame)/1000) : 0;
+  lastFrame = ts;
+
+  var playingSlot = -1;
+  if(play.active){
+    var tau = AC.currentTime - play.t0;
+    if(tau >= 0){
+      rotPhase = (tau / TOTAL) % 1;
+      playingSlot = Math.min(NPLATES-1, Math.floor(tau/(BEATS_PER_PLATE*BEAT)));
+    }
+    stepPlayback(tau);
+  } else {
+    rotPhase = (rotPhase + dt/110) % 1;
+  }
+
+  ctx.clearRect(0,0,W,H);
+  drawCylinder(playingSlot);
+  drawBars(now);
+}
+
+/* ==========================================================================
+   PLAYBACK
+   ========================================================================== */
+var play = { active:false, t0:0, validated:-1, notes:[], bassDone:{} };
+
+function scheduleFull(){
+  var t0 = AC.currentTime + 0.18;
+  play = { active:true, t0:t0, validated:-1, notes:[], bassDone:{} };
+  for(var slot=0; slot<NPLATES; slot++){
+    var plate = PLATES[state.order[slot]];
+    for(var b=0;b<BEATS_PER_PLATE;b++){
+      var m = plate[b];
+      if(m == null) continue;
+      var t = (slot*BEATS_PER_PLATE + b)*BEAT;
+      strike(m, t0+t, {gain:0.52});
+      play.notes.push({ t:t, lane:laneOf(m), done:false });
+    }
+  }
+  document.getElementById("playBtn").textContent = "Stop the cylinder";
+}
+
+function stepPlayback(tau){
+  if(!play.active) return;
+  var i, slot, bar, key, when;
+
+  for(i=0;i<play.notes.length;i++){
+    var n = play.notes[i];
+    if(!n.done && tau >= n.t){ n.done = true; flash[n.lane] = AC.currentTime; }
+  }
+
+  var nowA = AC.currentTime, look = 0.35;
+  for(slot=0; slot<NPLATES; slot++){
+    if(!isLocked(slot)) continue;
+    for(bar=0; bar<2; bar++){
+      key = slot+":"+bar;
+      if(play.bassDone[key]) continue;
+      when = play.t0 + (slot*BEATS_PER_PLATE + bar*3)*BEAT;
+      if(when < nowA - 0.02){ play.bassDone[key] = true; }
+      else if(when < nowA + look){ bassNote(BASS[slot][bar], when); play.bassDone[key] = true; }
+    }
+  }
+
+  var done = Math.min(NPLATES, Math.floor(tau/(BEATS_PER_PLATE*BEAT)));
+  while(play.validated + 1 < done){
+    play.validated++;
+    var s = play.validated;
+    if(state.order[s] === s && !isLocked(s)) lockSlot(s);
+  }
+
+  if(tau > TOTAL + 1.6) endPlayback();
+}
+
+function endPlayback(){
+  play.active = false;
+  document.getElementById("playBtn").textContent =
+    (lockedCount() === NPLATES) ? "Play it again" : "Turn the key";
+  if(lockedCount() === NPLATES && !solvedShown) showSolved(true);
+}
+
+function stopPlayback(){
+  play.active = false;
+  stopAllSound();
+  document.getElementById("playBtn").textContent =
+    (lockedCount() === NPLATES) ? "Play it again" : "Turn the key";
+}
+
+function auditionPlate(slot){
+  if(!AC) return;
+  var t0 = AC.currentTime + 0.06;
+  var plate = PLATES[state.order[slot]];
+  for(var b=0;b<BEATS_PER_PLATE;b++){
+    var m = plate[b];
+    if(m == null) continue;
+    strike(m, t0 + b*BEAT, {gain:0.52});
+  }
+}
+
+/* --------------------------------------------------------------------------
+   THE HALF-REMEMBERED VERSION - press and hold.
+   Plays the TRUE melody, but buried: muffled, eaten by static, wrong notes,
+   whole phrases cutting out. Every layer of damage scales down as she solves
+   the box, so the memory literally clears as she remembers. Sound only lasts
+   as long as she holds; releasing opens her eyes and it is gone.
+   -------------------------------------------------------------------------- */
+var HINT_RATE = 1.35;                       // a little too fast, dreamlike
+var HINT_LOOP = TOTAL/HINT_RATE + 1.2;      // silence before it comes round again
+
+var hint = { on:false, t0:0, idx:0, timer:null, gain:null, lp:null,
+             stat:null, seq:[], cutUntil:0, wowPh:0 };
+
+function buildHintSeq(){
+  var seq = [];
+  for(var slot=0; slot<NPLATES; slot++){
+    for(var b=0;b<BEATS_PER_PLATE;b++){
+      var m = PLATES[slot][b];                        // always the CORRECT order
+      if(m == null) continue;
+      seq.push({ t: (slot*BEATS_PER_PLATE + b)*BEAT/HINT_RATE, m:m });
+    }
+  }
+  return seq;
+}
+
+function hintTick(){
+  if(!hint.on || !AC) return;
+  var now = AC.currentTime, ahead = now + 0.3;
+  var p = lockedCount()/NPLATES, q = 1 - p;
+
+  var drop   = 0.46*q;          // notes simply missing
+  var wrongP = 0.26*q;          // notes remembered wrong
+  var cutP   = 0.09*q;          // the signal drops out entirely for a moment
+  var det    = 44*q;            // per-note pitch instability
+  var wow    = 30*q;            // slow tape-wow drift
+
+  for(var guard=0; guard<200; guard++){
+    var i    = hint.idx % hint.seq.length;
+    var pass = Math.floor(hint.idx / hint.seq.length);
+    var n    = hint.seq[i];
+    var when = hint.t0 + pass*HINT_LOOP + n.t;
+    if(when > ahead) break;
+    hint.idx++;
+    if(when < now - 0.05) continue;
+    if(when < hint.cutUntil) continue;
+    if(Math.random() < cutP){ hint.cutUntil = when + 0.3 + Math.random()*1.1; continue; }
+    if(Math.random() < drop) continue;
+
+    var midi = n.m;
+    if(Math.random() < wrongP){
+      midi += (Math.random() < 0.5 ? -1 : 1) * (Math.random() < 0.6 ? 1 : 2);
+    }
+    var drift = Math.sin((when - hint.t0)*0.85 + hint.wowPh) * wow;
+    strike(midi, when + (Math.random()*2-1)*0.03*q,
+           { gain:0.5, dest:hint.lp, detune:det, detuneFixed:drift, rev:false });
+  }
+}
+
+function startHint(){
+  if(!AC || hint.on) return;
+  stopPlayback();
+  var p = lockedCount()/NPLATES, q = 1 - p, t = AC.currentTime;
+
+  hint.on = true;
+  hint.idx = 0;
+  hint.cutUntil = 0;
+  hint.wowPh = Math.random()*6.283;
+  hint.seq = buildHintSeq();
+  hint.t0 = t + 0.06;
+
+  hint.gain = AC.createGain();
+  hint.gain.gain.setValueAtTime(0.0001, t);
+  hint.gain.gain.linearRampToValueAtTime(0.30 + 0.30*p, t + 0.4);
+  hint.gain.connect(master);
+  if(revSend) hint.gain.connect(revSend);
+
+  hint.lp = AC.createBiquadFilter();
+  hint.lp.type = "lowpass";
+  hint.lp.frequency.value = 300 * Math.pow(34, p);   // 300Hz buried -> ~10kHz clear
+  hint.lp.Q.value = 0.7;
+  hint.lp.connect(hint.gain);
+
+  if(q > 0.001){
+    /* The static of the erasure.
+       Two layers off the same 8s buffer, but at incommensurate playback rates
+       (1 and 0.7937) and random start offsets, so their loop points never line
+       up - the combined texture has no period a listener can catch. A slow
+       breathing LFO on top means it never sits still either. */
+    var lvl = 0.08*q;
+    var sg = AC.createGain();
+    sg.gain.setValueAtTime(0.0001, t);
+    sg.gain.linearRampToValueAtTime(lvl, t + 0.45);
+    sg.connect(hint.gain);
+
+    hint.stat = { gain:sg, srcs:[] };
+    var cfg = [[1.0, 1400, 0.5, 1.0], [0.7937, 2600, 0.8, 0.5]];
+    for(var si=0; si<cfg.length; si++){
+      var src = AC.createBufferSource();
+      src.buffer = getNoise();
+      src.loop = true;
+      src.playbackRate.value = cfg[si][0];
+      var bp = AC.createBiquadFilter();
+      bp.type = "bandpass";
+      bp.frequency.value = cfg[si][1];
+      bp.Q.value = cfg[si][2];
+      var lg = AC.createGain(); lg.gain.value = cfg[si][3];
+      src.connect(bp); bp.connect(lg); lg.connect(sg);
+      src.start(t, Math.random()*(NOISE_SECONDS-0.5));
+      hint.stat.srcs.push(src);
+
+      /* Slow drift on the read rate. Inaudible as pitch on noise, but it means
+         the buffer never lands in the same place twice - kills the residual
+         8-second repeat that survives the two-layer trick on its own. */
+      var rl = AC.createOscillator();
+      rl.type = "sine";
+      rl.frequency.value = 0.037 + si*0.019;
+      var rg = AC.createGain(); rg.gain.value = cfg[si][0]*0.02;
+      rl.connect(rg); rg.connect(src.playbackRate);
+      rl.start(t);
+      hint.stat.srcs.push(rl);
+    }
+
+    var lfo = AC.createOscillator();
+    lfo.type = "sine"; lfo.frequency.value = 0.13;      // ~7.7s, prime to both layers
+    var lfoG = AC.createGain(); lfoG.gain.value = lvl*0.35;
+    lfo.connect(lfoG); lfoG.connect(sg.gain);
+    lfo.start(t);
+    hint.stat.srcs.push(lfo);
+  }
+
+  hint.timer = setInterval(hintTick, 55);
+  hintTick();
+
+  document.getElementById("eyes").classList.add("on");
+  document.getElementById("hintBtn").classList.add("holding");
+}
+
+function stopHint(){
+  if(!hint.on) return;
+  hint.on = false;
+  if(hint.timer){ clearInterval(hint.timer); hint.timer = null; }
+
+  var t = AC ? AC.currentTime : 0;
+  var g = hint.gain, s = hint.stat;
+  if(g){
+    try{
+      g.gain.cancelScheduledValues(t);
+      g.gain.setValueAtTime(g.gain.value, t);
+      g.gain.linearRampToValueAtTime(0.0001, t + 0.2);
+    }catch(e){}
+  }
+  if(s && s.srcs){
+    for(var i=0;i<s.srcs.length;i++){ try{ s.srcs[i].stop(t + 0.3); }catch(e){} }
+    try{
+      s.gain.gain.cancelScheduledValues(t);
+      s.gain.gain.setValueAtTime(s.gain.gain.value, t);
+      s.gain.gain.linearRampToValueAtTime(0.0001, t + 0.22);
+    }catch(e){}
+  }
+  setTimeout(function(){ try{ if(g) g.disconnect(); }catch(e){} }, 4000);
+
+  hint.gain = null; hint.lp = null; hint.stat = null;
+
+  document.getElementById("eyes").classList.remove("on");
+  document.getElementById("hintBtn").classList.remove("holding");
+}
+
+/* ==========================================================================
+   LOCKING / REVEAL
+   ========================================================================== */
+function lockSlot(s){
+  state.locked.push(s);
+  save();
+  if(selected === s) selected = null;
+  renderTray();
+  var el = document.querySelector('.slot[data-slot="'+s+'"] .plate');
+  if(el) el.classList.add("ring");
+  var ln = document.querySelector('.vline[data-i="'+s+'"]');
+  if(ln){ ln.classList.add("clear"); ln.classList.add("justclear"); }
+  renderProgress();
+  renderGm();
+  if(AC) strike(LANES[LANES.length-1]+12, AC.currentTime+0.02, {gain:0.18, dur:3.4});
+}
+
+function showSolved(scroll){
+  solvedShown = true;
+  var n = document.getElementById("theName");
+  n.textContent = THE_NAME.toUpperCase();
+  n.className = "revealed";
+  var mem = document.getElementById("memory");
+  var html = "<h2>" + MEMORY_TITLE + "</h2>";
+  for(var i=0;i<MEMORY.length;i++) html += "<p>" + MEMORY[i] + "</p>";
+  mem.innerHTML = html;
+  mem.hidden = false;
+  if(scroll){
+    setTimeout(function(){ mem.scrollIntoView({behavior:"smooth", block:"start"}); }, 700);
+  }
+}
+
+/* ==========================================================================
+   RENDER
+   ========================================================================== */
+function pegSvg(plateId){
+  var plate = PLATES[plateId], n = LANES.length;
+  var w=84, h=54, x0=8, dx=(w-16)/(BEATS_PER_PLATE-1), y0=6, dy=(h-12)/(n-1);
+  var s = '<svg class="pegs" viewBox="0 0 '+w+' '+h+'" aria-hidden="true">';
+  var b;
+  for(b=0;b<BEATS_PER_PLATE;b++){
+    s += '<line x1="'+(x0+b*dx)+'" y1="3" x2="'+(x0+b*dx)+'" y2="'+(h-3)+'" stroke="rgba(255,220,160,.09)" stroke-width="1"/>';
+  }
+  for(b=0;b<BEATS_PER_PLATE;b++){
+    var m = plate[b];
+    if(m == null) continue;
+    s += '<circle cx="'+(x0+b*dx)+'" cy="'+(y0+(n-1-laneOf(m))*dy)+'" r="3" fill="currentColor"/>';
+  }
+  return s + '</svg>';
+}
+
+function renderTray(){
+  var html = "";
+  for(var s=0;s<NPLATES;s++){
+    var id = state.order[s], lk = isLocked(s);
+    html += '<div class="slot'+(lk?" locked":"")+'" data-slot="'+s+'">'
+          +   '<div class="slotnum">'+NUMERALS[s]+'</div>'
+          +   '<div class="plate'+(lk?" lock":"")+(selected===s?" sel":"")+'" data-slot="'+s+'" '
+          +        'role="button" tabindex="0" '
+          +        'title="'+(lk?"Locked in place":"Click to lift or place this plate")+'">'
+          +     '<button class="audition" data-aud="'+s+'" title="Play this plate alone">&#9834;</button>'
+          +     '<svg class="glyph" width="22" height="22" viewBox="0 0 24 24" fill="none" '
+          +          'stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">'
+          +       GLYPHS[id].replace(/class="f"/g, 'fill="currentColor" stroke="none"')
+          +     '</svg>'
+          +     pegSvg(id)
+          +   '</div>'
+          + '</div>';
+  }
+  document.getElementById("tray").innerHTML = html;
+}
+
+function renderVerse(){
+  var html = "";
+  for(var i=0;i<VERSE.length;i++){
+    html += '<div class="vline'+(isLocked(i)?" clear":"")+'" data-i="'+i+'">'+VERSE[i]+'</div>';
+  }
+  document.getElementById("verse").innerHTML = html;
+}
+
+function renderProgress(){
+  var c = lockedCount();
+  document.getElementById("progress").textContent =
+    (c === 0) ? "nothing of it comes back yet"
+  : (c === NPLATES) ? "you remember all of it"
+  : c + " of " + NPLATES + " phrases remembered";
+}
+
+function renderGm(){
+  document.getElementById("gmSolution").textContent = GLYPH_NAMES.join(" · ");
+  var now = [];
+  for(var i=0;i<NPLATES;i++){
+    now.push(isLocked(i) ? GLYPH_NAMES[state.order[i]].toUpperCase() : GLYPH_NAMES[state.order[i]]);
+  }
+  document.getElementById("gmNow").textContent = now.join(" · ");
+}
+
+function renderAll(){ renderTray(); renderVerse(); renderProgress(); renderGm(); }
+
+/* ==========================================================================
+   INTERACTION
+   ========================================================================== */
+function activatePlate(s){
+  if(isLocked(s)) return;
+  if(selected === null){ selected = s; }
+  else if(selected === s){ selected = null; }
+  else {
+    var t = state.order[selected];
+    state.order[selected] = state.order[s];
+    state.order[s] = t;
+    selected = null;
+    save();
+  }
+  renderTray();
+  renderGm();
+}
+
+document.getElementById("tray").addEventListener("click", function(e){
+  var aud = e.target.closest("[data-aud]");
+  if(aud){ e.stopPropagation(); auditionPlate(parseInt(aud.getAttribute("data-aud"),10)); return; }
+  var plate = e.target.closest(".plate");
+  if(!plate) return;
+  activatePlate(parseInt(plate.getAttribute("data-slot"),10));
+});
+
+document.getElementById("tray").addEventListener("keydown", function(e){
+  if(e.key !== "Enter" && e.key !== " ") return;
+  var plate = e.target.closest(".plate");
+  if(!plate) return;
+  e.preventDefault();
+  activatePlate(parseInt(plate.getAttribute("data-slot"),10));
+});
+
+document.getElementById("playBtn").addEventListener("click", function(){
+  if(!AC) return;
+  if(play.active){ stopPlayback(); return; }
+  stopAllSound();
+  scheduleFull();
+});
+
+// Press and hold to close her eyes. Release and it is gone.
+(function(){
+  var hb = document.getElementById("hintBtn");
+  hb.addEventListener("pointerdown", function(e){
+    e.preventDefault();
+    if(!AC) return;
+    try{ hb.setPointerCapture(e.pointerId); }catch(err){}
+    startHint();
+  });
+  ["pointerup","pointercancel","lostpointercapture"].forEach(function(ev){
+    hb.addEventListener(ev, function(){ stopHint(); });
+  });
+  hb.addEventListener("contextmenu", function(e){ e.preventDefault(); });
+  hb.addEventListener("keydown", function(e){
+    if((e.key === " " || e.key === "Enter") && !e.repeat){ e.preventDefault(); startHint(); }
+  });
+  hb.addEventListener("keyup", function(e){
+    if(e.key === " " || e.key === "Enter"){ e.preventDefault(); stopHint(); }
+  });
+  hb.addEventListener("blur", function(){ stopHint(); });
+  window.addEventListener("blur", function(){ stopHint(); });
+  document.addEventListener("visibilitychange", function(){
+    if(document.hidden) stopHint();
+  });
+})();
+
+document.getElementById("vol").addEventListener("input", function(e){
+  if(master) master.gain.value = (e.target.value/100)*0.95;
+});
+
+document.getElementById("resetBtn").addEventListener("click", function(){
+  if(!window.confirm("Scatter the pegs and forget the whole song? This clears all progress.")) return;
+  stopPlayback();
+  state = freshState();
+  selected = null;
+  solvedShown = false;
+  document.getElementById("memory").hidden = true;
+  var n = document.getElementById("theName");
+  n.textContent = "██████";
+  n.className = "redacted";
+  save();
+  renderAll();
+  document.getElementById("playBtn").textContent = "Turn the key";
+});
+
+// GM panel - type "namela" anywhere on the page.
+var buf = "";
+document.addEventListener("keydown", function(e){
+  if(!e.key || e.key.length !== 1) return;
+  buf = (buf + e.key.toLowerCase()).slice(-8);
+  if(buf.indexOf("namela") !== -1){
+    var gm = document.getElementById("gm");
+    gm.hidden = !gm.hidden;
+    buf = "";
+  }
+});
+document.getElementById("gmClose").addEventListener("click", function(){
+  document.getElementById("gm").hidden = true;
+});
+document.getElementById("gmReveal").addEventListener("click", function(){
+  stopPlayback();
+  state.order  = [0,1,2,3,4,5,6,7];
+  state.locked = [0,1,2,3,4,5,6,7];
+  selected = null;
+  save();
+  renderAll();
+  if(!solvedShown) showSolved(true);
+  document.getElementById("playBtn").textContent = "Play it again";
+  document.getElementById("gm").hidden = true;
+});
+
+document.getElementById("startBtn").addEventListener("click", function(){
+  if(!AC) initAudio();
+  if(AC.state === "suspended") AC.resume();
+  master.gain.value = (document.getElementById("vol").value/100)*0.95;
+  var ov = document.getElementById("intro");
+  ov.classList.add("gone");
+  setTimeout(function(){ ov.hidden = true; }, 950);
+  setTimeout(function(){ if(!play.active) scheduleFull(); }, 800);
+});
+
+/* ==========================================================================
+   BOOT
+   ========================================================================== */
+if(!load()) state = freshState();
+renderAll();
+layout();
+window.addEventListener("resize", layout);
+requestAnimationFrame(draw);
+if(lockedCount() === NPLATES) showSolved(false);
+</script>
+</body>
+</html>

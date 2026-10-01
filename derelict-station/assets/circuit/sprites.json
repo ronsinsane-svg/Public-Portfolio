@@ -1,0 +1,26 @@
+{
+  "core": {
+    "idle": [
+      "core/idle_00.png",
+      "core/idle_01.png",
+      "core/idle_02.png",
+      "core/idle_03.png",
+      "core/idle_04.png",
+      "core/idle_05.png",
+      "core/idle_06.png",
+      "core/idle_07.png"
+    ],
+    "unlock": [
+      "core/unlock_00.png",
+      "core/unlock_01.png",
+      "core/unlock_02.png",
+      "core/unlock_03.png",
+      "core/unlock_04.png",
+      "core/unlock_05.png",
+      "core/unlock_06.png",
+      "core/unlock_07.png",
+      "core/unlock_08.png"
+    ]
+  },
+  "core_size": 96
+}
