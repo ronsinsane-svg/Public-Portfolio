@@ -5,8 +5,8 @@ built around LLM agents.
 
 Most of what I work on is internal tooling or client software whose source I can't
 publish. So this repository is written to be useful without it: each case study describes
-the mechanism, the decisions, and the tradeoffs in enough detail to be argued with. One
-project ships with complete readable source.
+the mechanism, the decisions, and the tradeoffs in enough detail to be argued with. Three
+projects ship with complete readable source.
 
 ---
 
@@ -43,6 +43,28 @@ scenarios replayable offline from recorded fixtures.
 
 ---
 
+## Games and puzzles
+
+Built for a tabletop campaign. Both are static pages with complete source, no build step,
+and no dependencies.
+
+**[Derelict Station](case-studies/06-derelict-station.md)** ·
+*~1,560 LOC · [full source →](derelict-station)*
+Scan a dead station with a WebGL lens and repair its systems with circuit puzzles, ending
+with one wrapped around a 3D cube. The hidden layer is computed from data, so hit-testing
+uses the shader's own maths. Puzzles are seeded spanning trees. All the art came from a
+generative model, which I evaluated over about 290 logged generations before building on
+it.
+
+**[The Music Box](case-studies/07-the-music-box.md)** ·
+*~1,140 LOC · [full source →](the-music-box) ·
+[play →](https://demon-lord-sol.neocities.org/themusicbox)*
+An audio puzzle: reorder a music box's cylinder until the lullaby plays right. Fully
+synthesised with Web Audio. Its hint plays the true melody through static and damage that
+fade as you solve, so you get exactly as much help as you've earned.
+
+---
+
 ## A through-line
 
 Three of these projects made the same call about credential boundaries, independently and
@@ -64,7 +86,7 @@ version — which is why it held.
 
 ## Reading the code
 
-[`agentic-order-to-cash/`](agentic-order-to-cash) is the one project with complete public
+[`agentic-order-to-cash/`](agentic-order-to-cash) is the agent project with complete public
 source. It runs with no network and no API key:
 
 ```bash
@@ -78,3 +100,9 @@ npm run typecheck
 Its [README](agentic-order-to-cash/README.md) is the best single read here — it argues a
 position about where determinism belongs in agent systems and then shows the code that
 enforces it.
+
+The two games need only a static file server:
+
+```bash
+python3 -m http.server -d derelict-station 8000    # or -d the-music-box
+```

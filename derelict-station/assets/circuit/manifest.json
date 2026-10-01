@@ -1,0 +1,505 @@
+{
+  "name": "scifi",
+  "source": "assets/pixellab-eval/F",
+  "tile_size": [
+    32,
+    32
+  ],
+  "trimmed_px": 0,
+  "bridged": true,
+  "mask_bits": {
+    "N": 1,
+    "E": 2,
+    "S": 4,
+    "W": 8
+  },
+  "states": [
+    "base",
+    "off",
+    "powered",
+    "fault"
+  ],
+  "state_hues_deg": {
+    "powered": 125,
+    "fault": 0
+  },
+  "tiles": [
+    {
+      "mask": 1,
+      "sides": "N",
+      "files": {
+        "base": "tiles/N_base.png",
+        "off": "tiles/N_off.png",
+        "powered": "tiles/N_powered.png",
+        "fault": "tiles/N_fault.png"
+      },
+      "edges": {
+        "N": [
+          11,
+          20
+        ]
+      }
+    },
+    {
+      "mask": 2,
+      "sides": "E",
+      "files": {
+        "base": "tiles/E_base.png",
+        "off": "tiles/E_off.png",
+        "powered": "tiles/E_powered.png",
+        "fault": "tiles/E_fault.png"
+      },
+      "edges": {
+        "E": [
+          11,
+          20
+        ]
+      }
+    },
+    {
+      "mask": 3,
+      "sides": "NE",
+      "files": {
+        "base": "tiles/NE_base.png",
+        "off": "tiles/NE_off.png",
+        "powered": "tiles/NE_powered.png",
+        "fault": "tiles/NE_fault.png"
+      },
+      "edges": {
+        "N": [
+          11,
+          20
+        ],
+        "E": [
+          11,
+          20
+        ]
+      }
+    },
+    {
+      "mask": 4,
+      "sides": "S",
+      "files": {
+        "base": "tiles/S_base.png",
+        "off": "tiles/S_off.png",
+        "powered": "tiles/S_powered.png",
+        "fault": "tiles/S_fault.png"
+      },
+      "edges": {
+        "S": [
+          11,
+          20
+        ]
+      }
+    },
+    {
+      "mask": 5,
+      "sides": "NS",
+      "files": {
+        "base": "tiles/NS_base.png",
+        "off": "tiles/NS_off.png",
+        "powered": "tiles/NS_powered.png",
+        "fault": "tiles/NS_fault.png"
+      },
+      "edges": {
+        "N": [
+          11,
+          20
+        ],
+        "S": [
+          11,
+          20
+        ]
+      }
+    },
+    {
+      "mask": 6,
+      "sides": "ES",
+      "files": {
+        "base": "tiles/ES_base.png",
+        "off": "tiles/ES_off.png",
+        "powered": "tiles/ES_powered.png",
+        "fault": "tiles/ES_fault.png"
+      },
+      "edges": {
+        "E": [
+          11,
+          20
+        ],
+        "S": [
+          11,
+          20
+        ]
+      }
+    },
+    {
+      "mask": 7,
+      "sides": "NES",
+      "files": {
+        "base": "tiles/NES_base.png",
+        "off": "tiles/NES_off.png",
+        "powered": "tiles/NES_powered.png",
+        "fault": "tiles/NES_fault.png"
+      },
+      "edges": {
+        "N": [
+          11,
+          20
+        ],
+        "E": [
+          11,
+          20
+        ],
+        "S": [
+          11,
+          20
+        ]
+      }
+    },
+    {
+      "mask": 8,
+      "sides": "W",
+      "files": {
+        "base": "tiles/W_base.png",
+        "off": "tiles/W_off.png",
+        "powered": "tiles/W_powered.png",
+        "fault": "tiles/W_fault.png"
+      },
+      "edges": {
+        "W": [
+          11,
+          20
+        ]
+      }
+    },
+    {
+      "mask": 9,
+      "sides": "NW",
+      "files": {
+        "base": "tiles/NW_base.png",
+        "off": "tiles/NW_off.png",
+        "powered": "tiles/NW_powered.png",
+        "fault": "tiles/NW_fault.png"
+      },
+      "edges": {
+        "N": [
+          11,
+          20
+        ],
+        "W": [
+          11,
+          20
+        ]
+      }
+    },
+    {
+      "mask": 10,
+      "sides": "EW",
+      "files": {
+        "base": "tiles/EW_base.png",
+        "off": "tiles/EW_off.png",
+        "powered": "tiles/EW_powered.png",
+        "fault": "tiles/EW_fault.png"
+      },
+      "edges": {
+        "E": [
+          11,
+          20
+        ],
+        "W": [
+          11,
+          20
+        ]
+      }
+    },
+    {
+      "mask": 11,
+      "sides": "NEW",
+      "files": {
+        "base": "tiles/NEW_base.png",
+        "off": "tiles/NEW_off.png",
+        "powered": "tiles/NEW_powered.png",
+        "fault": "tiles/NEW_fault.png"
+      },
+      "edges": {
+        "N": [
+          11,
+          20
+        ],
+        "E": [
+          11,
+          20
+        ],
+        "W": [
+          11,
+          20
+        ]
+      }
+    },
+    {
+      "mask": 12,
+      "sides": "SW",
+      "files": {
+        "base": "tiles/SW_base.png",
+        "off": "tiles/SW_off.png",
+        "powered": "tiles/SW_powered.png",
+        "fault": "tiles/SW_fault.png"
+      },
+      "edges": {
+        "S": [
+          11,
+          20
+        ],
+        "W": [
+          11,
+          20
+        ]
+      }
+    },
+    {
+      "mask": 13,
+      "sides": "NSW",
+      "files": {
+        "base": "tiles/NSW_base.png",
+        "off": "tiles/NSW_off.png",
+        "powered": "tiles/NSW_powered.png",
+        "fault": "tiles/NSW_fault.png"
+      },
+      "edges": {
+        "N": [
+          11,
+          20
+        ],
+        "S": [
+          11,
+          20
+        ],
+        "W": [
+          11,
+          20
+        ]
+      }
+    },
+    {
+      "mask": 14,
+      "sides": "ESW",
+      "files": {
+        "base": "tiles/ESW_base.png",
+        "off": "tiles/ESW_off.png",
+        "powered": "tiles/ESW_powered.png",
+        "fault": "tiles/ESW_fault.png"
+      },
+      "edges": {
+        "E": [
+          11,
+          20
+        ],
+        "S": [
+          11,
+          20
+        ],
+        "W": [
+          11,
+          20
+        ]
+      }
+    },
+    {
+      "mask": 15,
+      "sides": "NESW",
+      "files": {
+        "base": "tiles/NESW_base.png",
+        "off": "tiles/NESW_off.png",
+        "powered": "tiles/NESW_powered.png",
+        "fault": "tiles/NESW_fault.png"
+      },
+      "edges": {
+        "N": [
+          11,
+          20
+        ],
+        "E": [
+          11,
+          20
+        ],
+        "S": [
+          11,
+          20
+        ],
+        "W": [
+          11,
+          20
+        ]
+      }
+    }
+  ],
+  "extras": [
+    "extras/none_tile_0.png",
+    "extras/none_tile_1.png",
+    "extras/x_tile_17.png"
+  ],
+  "missing_masks": [],
+  "aligned": [],
+  "seam_mismatches": 0,
+  "fill": {
+    "E": {
+      "E": {
+        "strip": "fill/E_fromE.png",
+        "frames": 9
+      }
+    },
+    "ES": {
+      "E": {
+        "strip": "fill/ES_fromE.png",
+        "frames": 9
+      },
+      "S": {
+        "strip": "fill/ES_fromS.png",
+        "frames": 9
+      }
+    },
+    "ESW": {
+      "E": {
+        "strip": "fill/ESW_fromE.png",
+        "frames": 9
+      },
+      "S": {
+        "strip": "fill/ESW_fromS.png",
+        "frames": 9
+      },
+      "W": {
+        "strip": "fill/ESW_fromW.png",
+        "frames": 9
+      }
+    },
+    "EW": {
+      "E": {
+        "strip": "fill/EW_fromE.png",
+        "frames": 9
+      },
+      "W": {
+        "strip": "fill/EW_fromW.png",
+        "frames": 9
+      }
+    },
+    "N": {
+      "N": {
+        "strip": "fill/N_fromN.png",
+        "frames": 9
+      }
+    },
+    "NE": {
+      "E": {
+        "strip": "fill/NE_fromE.png",
+        "frames": 9
+      },
+      "N": {
+        "strip": "fill/NE_fromN.png",
+        "frames": 9
+      }
+    },
+    "NES": {
+      "E": {
+        "strip": "fill/NES_fromE.png",
+        "frames": 9
+      },
+      "N": {
+        "strip": "fill/NES_fromN.png",
+        "frames": 8
+      },
+      "S": {
+        "strip": "fill/NES_fromS.png",
+        "frames": 8
+      }
+    },
+    "NESW": {
+      "E": {
+        "strip": "fill/NESW_fromE.png",
+        "frames": 9
+      },
+      "N": {
+        "strip": "fill/NESW_fromN.png",
+        "frames": 8
+      },
+      "S": {
+        "strip": "fill/NESW_fromS.png",
+        "frames": 8
+      },
+      "W": {
+        "strip": "fill/NESW_fromW.png",
+        "frames": 8
+      }
+    },
+    "NEW": {
+      "E": {
+        "strip": "fill/NEW_fromE.png",
+        "frames": 9
+      },
+      "N": {
+        "strip": "fill/NEW_fromN.png",
+        "frames": 9
+      },
+      "W": {
+        "strip": "fill/NEW_fromW.png",
+        "frames": 9
+      }
+    },
+    "NS": {
+      "N": {
+        "strip": "fill/NS_fromN.png",
+        "frames": 9
+      },
+      "S": {
+        "strip": "fill/NS_fromS.png",
+        "frames": 9
+      }
+    },
+    "NSW": {
+      "N": {
+        "strip": "fill/NSW_fromN.png",
+        "frames": 8
+      },
+      "S": {
+        "strip": "fill/NSW_fromS.png",
+        "frames": 8
+      },
+      "W": {
+        "strip": "fill/NSW_fromW.png",
+        "frames": 8
+      }
+    },
+    "NW": {
+      "N": {
+        "strip": "fill/NW_fromN.png",
+        "frames": 9
+      },
+      "W": {
+        "strip": "fill/NW_fromW.png",
+        "frames": 9
+      }
+    },
+    "S": {
+      "S": {
+        "strip": "fill/S_fromS.png",
+        "frames": 9
+      }
+    },
+    "SW": {
+      "S": {
+        "strip": "fill/SW_fromS.png",
+        "frames": 9
+      },
+      "W": {
+        "strip": "fill/SW_fromW.png",
+        "frames": 9
+      }
+    },
+    "W": {
+      "W": {
+        "strip": "fill/W_fromW.png",
+        "frames": 9
+      }
+    }
+  },
+  "fill_missing": []
+}
