@@ -49,7 +49,8 @@ Built for a tabletop campaign. Both are static pages with complete source, no bu
 and no dependencies.
 
 **[Derelict Station](case-studies/06-derelict-station.md)** ·
-*~1,560 LOC · [full source →](derelict-station)*
+*~1,560 LOC · [full source →](derelict-station) ·
+[play →](https://demon-lord-sol.neocities.org/derelict-station/)*
 Scan a dead station with a WebGL lens and repair its systems with circuit puzzles, ending
 with one wrapped around a 3D cube. The hidden layer is computed from data, so hit-testing
 uses the shader's own maths. Puzzles are seeded spanning trees. All the art came from a

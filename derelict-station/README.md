@@ -4,6 +4,7 @@ A browser puzzle game for a tabletop campaign. Sweep a dead station with a scann
 the failing systems, and bring each back online with a circuit panel. The last one is a
 circuit wrapped around the six faces of a cube.
 
+Live: <https://demon-lord-sol.neocities.org/derelict-station/>.
 Case study: [`../case-studies/06-derelict-station.md`](../case-studies/06-derelict-station.md).
 Design doc: [`DESIGN.md`](DESIGN.md).
 

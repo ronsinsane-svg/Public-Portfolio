@@ -1,7 +1,7 @@
 # Derelict Station
 
 **Browser puzzle game · WebGL, vanilla JS, an AI art pipeline · ~1,560 LOC ·
-[full source →](../derelict-station)**
+[full source →](../derelict-station) · [play it →](https://demon-lord-sol.neocities.org/derelict-station/)**
 
 ## The problem
 
