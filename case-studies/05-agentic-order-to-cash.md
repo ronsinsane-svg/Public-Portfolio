@@ -56,5 +56,5 @@ reliable failure than to detect it afterward.
 ## Outcome
 
 Seven scenarios passing, replayable from recorded fixtures with no network and no API key.
-This is the one project here with fully readable public source — synthetic data, fictional
-company, and the architecture is the deliverable.
+The source is fully public: synthetic data, a fictional company, and the architecture is the
+deliverable.
