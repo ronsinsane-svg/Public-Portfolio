@@ -1,7 +1,7 @@
 # Ronald Diener — Selected Work
 
-Backend and full-stack engineering, with a recent concentration in production systems
-built around LLM agents.
+Solutions architecture for AI systems. I scope the problem with the client, then build the
+production system that solves it, usually around LLM agents.
 
 Most of what I work on is internal tooling or client software whose source I can't
 publish. So this repository is written to be useful without it: each case study describes
